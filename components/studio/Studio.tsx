@@ -87,11 +87,21 @@ export function Studio({ defaultSport }: { defaultSport?: SportSlug }) {
             </div>
 
             {/* Desktop: две крупные фигуры (спереди и сзади), между ними 360° — как в эталоне */}
-            <div className="relative hidden grid-cols-2 items-center gap-2 bg-[radial-gradient(80%_60%_at_50%_25%,rgba(228,20,28,0.05),transparent_65%)] px-6 py-10 lg:grid">
-              <FigureView side="front" />
-              <FigureView side="back" />
+            <div className="relative hidden grid-cols-2 items-start gap-2 bg-[radial-gradient(80%_60%_at_50%_25%,rgba(228,20,28,0.05),transparent_65%)] px-6 py-10 lg:grid">
+              <figure className="flex flex-col items-center gap-3">
+                <FigureView side="front" />
+                <figcaption className="font-sans text-[11px] uppercase tracking-[0.16em] text-muted">
+                  Вид спереди
+                </figcaption>
+              </figure>
+              <figure className="flex flex-col items-center gap-3">
+                <FigureView side="back" />
+                <figcaption className="font-sans text-[11px] uppercase tracking-[0.16em] text-muted">
+                  Вид сзади
+                </figcaption>
+              </figure>
               <span
-                className="pointer-events-none absolute left-1/2 top-1/2 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-line2 bg-white font-sans text-[11px] font-bold text-ink shadow-soft"
+                className="pointer-events-none absolute left-1/2 top-1/3 grid h-14 w-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-line2 bg-white font-sans text-[11px] font-bold text-ink shadow-soft"
                 aria-hidden="true"
               >
                 360°
@@ -99,9 +109,12 @@ export function Studio({ defaultSport }: { defaultSport?: SportSlug }) {
             </div>
 
             {/* Mobile: одна фигура + переключатель сверху */}
-            <div className="grid place-items-center bg-[radial-gradient(80%_60%_at_50%_25%,rgba(228,20,28,0.05),transparent_65%)] px-6 py-8 lg:hidden">
+            <figure className="grid place-items-center gap-3 bg-[radial-gradient(80%_60%_at_50%_25%,rgba(228,20,28,0.05),transparent_65%)] px-6 py-8 lg:hidden">
               <FigureView side={s.side} />
-            </div>
+              <figcaption className="font-sans text-[11px] uppercase tracking-[0.16em] text-muted">
+                {s.side === 'front' ? 'Вид спереди' : 'Вид сзади'}
+              </figcaption>
+            </figure>
 
             <div className="border-t border-line px-5 py-5">
               <button
