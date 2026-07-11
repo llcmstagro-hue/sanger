@@ -6,28 +6,33 @@ test.describe('Студия дизайна', () => {
     const studio = page.locator('#studio');
     await studio.scrollIntoViewIfNeeded();
 
-    // desktop-панель; на мобиле управление в bottom sheet
+    // desktop-панель видна сразу; на мобиле управление в bottom sheet
     const isDesktop = await page.evaluate(() => window.innerWidth >= 1024);
     if (!isDesktop) {
       await page.getByRole('button', { name: 'Настроить форму' }).click();
     }
 
-    // смена основного цвета
-    await page.locator('button[aria-label="Цвет #1D3A8F"]').first().click();
-    const svg = studio.locator('#studio svg, svg').first();
-    await expect(studio).toContainText('Вид спереди');
+    // смена основного цвета — берём именно видимый свотч
+    // (скрытая desktop-панель остаётся в DOM на мобиле)
+    const swatch = page.locator('button[aria-label="Цвет #1D3A8F"]:visible').first();
+    await swatch.click();
+    await expect(swatch).toHaveAttribute('aria-pressed', 'true');
 
-    // фамилия и номер
-    const surname = page.locator('#st-surname');
-    await surname.fill('ПЕТРОВ');
-    const number = page.locator('#st-number');
-    await number.fill('9');
-    await expect(studio.locator('svg')).toContainText('9');
+    // фамилия и номер попадают в живой предпросмотр (SVG-текст)
+    await page.locator('#st-surname:visible').first().fill('ПЕТРОВ');
+    await page.locator('#st-number:visible').first().fill('9');
+    // номер отрисован и спереди, и сзади
+    await expect(studio).toContainText('9');
 
-    // переключение вида (спереди/сзади)
+    // переключение вида: фамилия видна на спине
     if (isDesktop) {
+      // на десктопе одновременно видны обе фигуры — спина уже на экране
+      await expect(studio).toContainText('ПЕТРОВ');
+    } else {
+      // на мобиле закрываем настройки и переключаемся на «Сзади»
+      await page.getByRole('button', { name: 'Закрыть' }).click();
       await page.getByRole('button', { name: 'Сзади' }).click();
-      await expect(studio.locator('svg')).toContainText('ПЕТРОВ');
+      await expect(studio).toContainText('ПЕТРОВ');
     }
   });
 
