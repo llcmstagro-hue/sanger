@@ -1,0 +1,90 @@
+# SANGER — пакет промптов для генерации всех фото (100 + баул)
+
+Единая арт-дирекция. К каждому промпту добавляется **style-суффикс**:
+
+> **[STYLE]** — on-brand SANGER: черно-красная форма с белым вордмарком «SANGER», кинематографический тёмный свет арены с красными акцентами, премиальная спортивная фотография, высокий контраст, резкая детализация, без текстовых оверлеев и графики.
+
+Для товарных/студийных кадров вместо «арены» используется **[STUDIO]** — «чистый белый студийный фон, мягкий студийный свет».
+
+⚠️ Единоборства = ММА, бокс, кикбокс, тайский бокс, борьба, грэпплинг. **Без кимоно, ги, поясов и традиционных единоборств.**
+
+Пути сохранения указаны в конце каждой строки → кладутся в `public/assets/...`.
+
+---
+
+## 01–10 · HERO / ГЛАВНЫЕ ЭКРАНЫ  → `public/assets/hero/`
+1. Хоккеист в динамике, рывок по льду, ледяная крошка. [STYLE] → `hero/hockey.png`
+2. Футболист в движении с мячом на стадионе. [STYLE] → `hero/football.png`
+3. Волейболистка в атаке у сетки. [STYLE] → `hero/volleyball.png`
+4. Баскетболист ведёт мяч / проход под кольцо. [STYLE] → `hero/basketball.png`
+5. Боец единоборств в боевой стойке (рашгард+шорты, без кимоно). [STYLE] → `hero/mma.png`
+6. Хоккейная команда группой на льду. [STYLE] → `hero/team-hockey.png`
+7. Футбольная команда на поле под софитами. [STYLE] → `hero/team-football.png`
+8. Волейбольная команда (муж/жен) в зале. [STYLE] → `hero/team-volleyball.png`
+9. Баскетбольная команда на паркете. [STYLE] → `hero/team-basketball.png`
+10. Единоборцы клубом, вид со спины (номера, фамилии). [STYLE] → `hero/team-mma.png`
+
+## 11–35 · ВИДЫ СПОРТА (экшн) → `public/assets/sports/action/`
+11–15. Хоккей: 5 экшн-кадров (бросок, вираж, силовой, вратарь, крупный портрет игрока). [STYLE] → `sports/action/hockey-1..5.png`
+16–20. Футбол: удар, дриблинг, подкат, вратарский сейв, портрет. [STYLE] → `sports/action/football-1..5.png`
+21–25. Волейбол: атака, блок, подача, приём, портрет. [STYLE] → `sports/action/volleyball-1..5.png`
+26–30. Баскетбол: данк, бросок, проход, дриблинг, портрет. [STYLE] → `sports/action/basketball-1..5.png`
+31–35. Единоборства: удар руками, лоу-кик, борцовский захват, стойка, портрет (без кимоно). [STYLE] → `sports/action/mma-1..5.png`
+
+Карточки видов спорта (обложки грида) → `public/assets/sports/`: hockey.png, football.png, volleyball.png, basketball.png, mma.png (взять лучшие из 11/16/21/26/31).
+
+## 36–55 · НАШИ РАБОТЫ / КОМАНДЫ → `public/assets/works/`
+36–41. Хоккейные команды в форме (в т.ч. со спины с номерами 17/23). [STYLE] → `works/hockey-1..6.png`
+42–45. Волейбольные команды (муж/жен), номера 3/7/8. [STYLE] → `works/volleyball-1..4.png`
+43–48. Баскетбольные команды, номера 7/13/24. [STYLE] → `works/basketball-1..6.png`
+49–55. Смешанные командные портреты с баннером «SANGER», единоборцы/футбол. [STYLE] → `works/mixed-1..7.png`
+> Для карточек галереи достаточно по 4 кадра на спорт: `works/<sport>-<team>.png`.
+
+## 56–75 · ПРОИЗВОДСТВО → `public/assets/production/`
+56. Раскрой красно-чёрной ткани, лазер/нож. [STUDIO] → `production/01-cut.png`
+57. Швейная машина крупным планом. [STUDIO] → `production/02-sewing.png`
+58. Руки мастера за работой, нанесение. [STUDIO] → `production/03-hands.png`
+59. Нанесение номера «17» на джерси. [STUDIO] → `production/04-number.png`
+60. Рулоны ткани, катушки ниток. [STUDIO] → `production/05-materials.png`
+61. Вышивка вордмарка «SANGER». [STUDIO] → `production/06-embroidery.png`
+62–63. Термопресс/сублимация, лейбл «SANGER». [STUDIO] → `production/07-press.png`, `08-label.png`
+64–67. Готовые комплекты, контроль качества, упаковка. [STUDIO] → `production/09-qc.png`..`12-pack.png`
+68–75. Склад, коробки «SANGER», отгрузка, доставка (фургон). [STUDIO/reportage] → `production/13-warehouse.png`..`20-delivery.png`
+> В проекте используется 4 кадра (Production.tsx): 56, 59, 61, 64.
+
+## 76–85 · СТУДИЯ ДИЗАЙНА / ДЕТАЛИ → `public/assets/studio/`
+76. Хоккеист в полный рост, вид **спереди**, белый фон. [STUDIO] → `studio/hockey/front.png` ✅ уже сгенерирован
+77. Хоккеист в полный рост, вид **сзади** (ИВАНОВ 17). [STUDIO] → `studio/hockey/back.png` ✅ уже сгенерирован
+78–79. Воротник и манжета крупно, красно-чёрная фактура. [STUDIO] → `studio/detail/collar.png`, `cuff.png`
+80–82. Шов, силиконовый лейбл «SANGER», кромка. [STUDIO] → `studio/detail/seam.png`, `patch.png`, `edge.png`
+83–85. Фактура ткани макро (mesh, рип-стоп, компрессия). [STUDIO] → `studio/detail/fabric-1..3.png`
+> Фигуры спереди/сзади для остальных спортов: `studio/<sport>/front.png` + `back.png` (по образцу хоккея).
+
+## 86–90 · АКСЕССУАРЫ → `public/assets/accessories/`
+86. Спортивная сумка черно-красная «SANGER». [STUDIO] → `accessories/bag.png`
+87. Рюкзак «SANGER». [STUDIO] → `accessories/backpack.png`
+88–89. Кепка «SANGER» (два ракурса). [STUDIO] → `accessories/cap.png`, `cap-2.png`
+90. Бирка/лейбл «SANGER Premium Quality». [STUDIO] → `accessories/tag.png`
+**+ БАУЛ НА КОЛЁСАХ (хоккей):** большой хоккейный баул на колёсах, чёрный с красным, вордмарк «SANGER», выдвижная ручка, колёса. [STUDIO] → `accessories/hockey-roller-bag.png` ✅ уже сгенерирован
+
+## 91–100 · АТМОСФЕРА / ЭМОЦИИ → `public/assets/atmosphere/`
+91. Трибуны, файеры, болельщики. [STYLE] → `atmosphere/01-stands.png`
+92. Руки команды в круге (единство). [STYLE] → `atmosphere/02-hands.png`
+93. Раздевалка с развешенной формой. [STYLE] → `atmosphere/03-lockerroom.png`
+94. Силуэт спортсмена в тоннеле на выход. [STYLE] → `atmosphere/04-tunnel.png`
+95. Победа, кубок, празднование. [STYLE] → `atmosphere/05-victory.png`
+96. Эмоция крика/победы крупным планом. [STYLE] → `atmosphere/06-emotion.png`
+97. Детская/юниорская команда в форме. [STYLE] → `atmosphere/07-youth.png`
+98. Портрет игрока в шлеме, драматичный свет. [STYLE] → `atmosphere/08-portrait.png`
+99. Флаг «SANGER» на арене. [STYLE] → `atmosphere/09-flag.png`
+100. Освещённая арена перед матчем. [STYLE] → `atmosphere/10-arena.png`
+
+---
+
+## Как сгенерировать пакетно (в code-окружении, где есть сеть)
+
+1. Сложить строки выше в `scripts/prompts.json` (`{ "hero/hockey.png": "…полный промпт…", … }`).
+2. Прогнать батч-скрипт (Glif/любой image-API), который для каждого ключа генерирует картинку и сохраняет по пути `public/assets/<key>`.
+3. Для студийных фигур — включить `available: true` в `lib/studioAssets.ts`; для остальных — заменить `<Placeholder/>` на `<Image/>` (пути уже совпадают).
+
+Скелет батч-скрипта можно попросить отдельно — сделаю под ваш image-API.

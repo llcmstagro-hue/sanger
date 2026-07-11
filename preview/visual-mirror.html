@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SANGER — визуальное зеркало (проверка дизайна)</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FAFAF8;--paper2:#F2F1EC;--ink:#111;--ink2:#3A3A3A;--muted:#6B6B6B;--line:rgba(17,17,17,.10);--line2:rgba(17,17,17,.16);--red:#E4141C}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+.d{font-family:Montserrat,sans-serif}
+.wrap{max-width:1440px;margin:0 auto;padding:0 48px}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+/* header */
+.hd{position:sticky;top:0;z-index:50;background:rgba(250,250,248,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd .in{display:flex;align-items:center;gap:32px;height:74px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:.04em}
+.logo .s{width:24px;height:3px;border-radius:2px;background:var(--red)}
+.nav{display:flex;gap:28px;margin-left:8px}
+.nav a{font-size:13.5px;color:var(--ink2)}
+.cta{margin-left:auto;background:var(--red);color:#fff;font-weight:600;font-size:13.5px;padding:0 20px;height:44px;display:inline-flex;align-items:center;gap:8px;border-radius:100px}
+/* hero */
+.hero{padding:64px 0 56px;position:relative;overflow:hidden}
+.hero .g{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line2);border-radius:100px;padding:8px 16px;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);margin-bottom:24px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--red)}
+h1{font-family:Montserrat;font-weight:900;text-transform:uppercase;line-height:1.02;letter-spacing:-.02em;font-size:64px}
+h1 .r{color:var(--red)}
+.sub{color:var(--muted);font-size:18px;max-width:46ch;margin:24px 0 32px}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:15px;padding:0 28px;height:52px;border-radius:100px}
+.btn.p{background:var(--red);color:#fff;box-shadow:0 10px 26px -12px rgba(228,20,28,.7)}
+.btn.g{border:1px solid var(--line2);color:var(--ink)}
+.mini{margin-top:28px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.mini b{color:var(--ink)}
+.ph{position:relative;background:var(--paper2);border-radius:20px;overflow:hidden;box-shadow:0 18px 50px -28px rgba(17,17,17,.28)}
+.ph.r45{aspect-ratio:4/5}
+.ph::before{content:"";position:absolute;inset:14px;border:1px dashed rgba(17,17,17,.15);border-radius:12px}
+.ph .t{position:absolute;left:20px;bottom:20px}
+.ph .t .n{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.ph .t .s{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+/* advantages */
+.adv{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(242,241,236,.5)}
+.adv ul{display:grid;grid-template-columns:repeat(5,1fr);list-style:none}
+.adv li{border-left:1px solid var(--line);padding:28px 20px}
+.adv li:first-child{border-left:none}
+.adv h3{font-family:Montserrat;font-weight:700;font-size:15px;text-transform:uppercase;margin:16px 0 6px}
+.adv p{font-size:13.5px;color:var(--muted)}
+.adv svg{width:28px;height:28px}
+/* section */
+.sec{padding:80px 0}
+.shead{margin-bottom:44px}
+.slabel{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin-bottom:14px}
+.slabel::before{content:"";width:28px;height:2px;background:var(--red)}
+.stitle{font-family:Montserrat;font-weight:800;text-transform:uppercase;line-height:1.02;letter-spacing:-.02em;font-size:44px}
+/* sports */
+.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.scard{border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}
+.scard .img{aspect-ratio:3/4;position:relative}
+.scard .b{padding:16px}
+.scard .b .nm{font-family:Montserrat;font-weight:800;text-transform:uppercase;font-size:17px}
+.scard .b .ds{font-size:12.5px;color:var(--muted);margin-top:4px}
+.scard .b .go{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--red)}
+/* studio */
+.studio{background:rgba(242,241,236,.5)}
+.stg{display:grid;grid-template-columns:360px 1fr;gap:24px}
+.panel{border:1px solid var(--line);border-radius:20px;background:#fff;padding:24px}
+.grp{margin-bottom:22px}
+.glabel{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.glabel .n{width:20px;height:20px;border-radius:5px;background:var(--paper2);color:var(--red);display:grid;place-items:center;font-size:11px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:36px;border:1px solid var(--line2);border-radius:8px;padding:0 12px;display:inline-flex;align-items:center;font-size:11px;font-weight:700;text-transform:uppercase;color:var(--ink2)}
+.chip.on{background:var(--red);border-color:var(--red);color:#fff}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw b{width:36px;height:36px;border-radius:8px;border:1px solid var(--line2);display:block}
+.sw b.on{outline:2px solid var(--ink);outline-offset:2px}
+.field{display:grid;grid-template-columns:1fr 84px;gap:12px;margin-top:6px}
+.field label{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:block}
+.field input{width:100%;border:1px solid var(--line2);border-radius:8px;padding:12px;font-size:15px;background:#fff}
+.stage{border:1px solid var(--line);border-radius:20px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.stagetop{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.stagetop .vt{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;gap:8px;align-items:center}
+.seg button{min-height:40px;border-radius:100px;padding:0 16px;font-size:12px;font-weight:600;border:1px solid var(--line2);background:#fff}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stagebody{display:grid;place-items:center;padding:40px;background:radial-gradient(80% 60% at 50% 25%,rgba(228,20,28,.06),transparent 65%)}
+.stagebody svg{width:min(340px,80%);filter:drop-shadow(0 28px 40px rgba(17,17,17,.16))}
+.stagefoot{border-top:1px solid var(--line);padding:20px}
+.getcalc{width:100%;min-height:54px;border-radius:100px;background:var(--red);color:#fff;font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:15px;border:none}
+.note{text-align:center;color:var(--muted);font-size:13px;margin-top:12px}
+/* form */
+.card{max-width:672px;margin:0 auto;border:1px solid var(--line);border-radius:20px;background:#fff;padding:32px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg .full{grid-column:1/-1}
+.fg label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--line2);border-radius:12px;padding:12px 16px;font-size:15px;background:#fff}
+.subbtn{width:100%;min-height:54px;border-radius:100px;background:var(--red);color:#fff;font-weight:600;text-transform:uppercase;border:none;font-size:15px}
+/* footer */
+.ft{margin-top:0;border-top:1px solid var(--line);background:rgba(242,241,236,.6);padding:56px 0 28px}
+.fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px;border-bottom:1px solid var(--line);padding-bottom:40px}
+.fcol h5{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.fcol a{display:block;font-size:15px;color:var(--ink2);margin-bottom:10px}
+@media(max-width:1024px){.wrap{padding:0 24px}.hero .g{grid-template-columns:1fr}.adv ul{grid-template-columns:repeat(2,1fr)}.sgrid{grid-template-columns:1fr 1fr}.stg{grid-template-columns:1fr}h1{font-size:40px}.fgrid{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header class="hd"><div class="wrap in"><div class="logo"><span class="s"></span>SANGER</div>
+<nav class="nav"><a>Виды спорта</a><a>Наши работы</a><a>Студия дизайна</a><a>Производство</a><a>О компании</a><a>Контакты</a></nav>
+<a class="cta">Создать форму →</a></div></header>
+
+<section class="hero"><div class="wrap g">
+<div>
+<span class="eyebrow"><span class="dot"></span>Хоккей · экипировка на заказ</span>
+<h1>Хоккейная форма на заказ <span class="r">для вашей команды</span></h1>
+<p class="sub">Профессиональная хоккейная экипировка с индивидуальным дизайном. Собственное производство, от 5 комплектов.</p>
+<div class="btns"><a class="btn p">Создать форму →</a><a class="btn g">Наши работы</a></div>
+<p class="mini">Минимальный заказ — <b>от 5 комплектов</b></p>
+</div>
+<div class="ph r45"><span class="t"><span class="n">Hero · Хоккей</span><span class="s">крупный спортсмен в движении</span></span></div>
+</div></section>
+
+<section class="adv"><div class="wrap"><ul id="adv"></ul></div></section>
+
+<section class="sec"><div class="wrap">
+<div class="shead"><span class="slabel">Направления</span><div class="stitle">Виды спорта</div></div>
+<div class="sgrid" id="sgrid"></div>
+</div></section>
+
+<section class="sec studio"><div class="wrap">
+<div class="shead"><span class="slabel">Студия дизайна · онлайн</span><div class="stitle">Соберите форму команды</div></div>
+<div class="stg">
+<div class="panel">
+<div class="grp"><div class="glabel"><span class="n">1</span>Вид спорта</div><div class="chips"><span class="chip on">Хоккей</span><span class="chip">Футбол</span><span class="chip">Волейбол</span><span class="chip">Баскетбол</span><span class="chip">MMA</span></div></div>
+<div class="grp"><div class="glabel"><span class="n">2</span>Шаблон</div><div class="chips"><span class="chip on">Классика</span><span class="chip">Полосы</span><span class="chip">Шеврон</span><span class="chip">Диагональ</span></div></div>
+<div class="grp"><div class="glabel"><span class="n">3</span>Основной цвет</div><div class="sw"><b class="on" style="background:#15171B"></b><b style="background:#E4141C"></b><b style="background:#1D3A8F"></b><b style="background:#0F5A3C"></b><b style="background:#5A0E16"></b><b style="background:#3A3D44"></b></div></div>
+<div class="grp"><div class="glabel"><span class="n">4</span>Дополнительный цвет</div><div class="sw"><b style="background:#F4F3F0"></b><b class="on" style="background:#E4141C"></b><b style="background:#C9A24B"></b><b style="background:#9AA0A9"></b><b style="background:#111"></b></div></div>
+<div class="grp"><div class="glabel"><span class="n">5</span>Логотип · Фамилия · Номер</div>
+<div class="field"><div><label>Фамилия</label><input value="ИВАНОВ"></div><div><label>Номер</label><input value="17"></div></div></div>
+</div>
+<div class="stage">
+<div class="stagetop"><span class="vt">Вид спереди · Хоккей</span><span class="seg"><button class="on">Спереди</button><span class="vt">360°</span><button>Сзади</button></span></div>
+<div class="stagebody" id="stage"></div>
+<div class="stagefoot"><button class="getcalc">Получить расчёт</button><p class="note">Наш дизайнер бесплатно доработает ваш макет и подготовит профессиональную визуализацию.</p></div>
+</div>
+</div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+<div class="shead"><span class="slabel">Заявка</span><div class="stitle">Получить расчёт</div></div>
+<div class="card"><div class="fg">
+<div><label>Имя *</label><input placeholder="Как к вам обращаться"></div>
+<div><label>Телефон *</label><input placeholder="+7 (___) ___-__-__"></div>
+<div><label>E-mail</label><input placeholder="team@mail.ru"></div>
+<div><label>Город</label><input placeholder="Город"></div>
+<div><label>Вид спорта *</label><select><option>Хоккей</option></select></div>
+<div><label>Количество комплектов *</label><input value="5"></div>
+<div class="full"><label>Комментарий</label><textarea rows="3"></textarea></div>
+<div class="full"><button class="subbtn">Получить расчёт</button><p class="note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p></div>
+</div></div>
+</div></section>
+
+<footer class="ft"><div class="wrap"><div class="fgrid">
+<div><div class="logo" style="margin-bottom:14px"><span class="s"></span>SANGER</div><p style="color:var(--muted);font-size:14px;max-width:30ch">Производство командной спортивной формы на заказ.</p></div>
+<div class="fcol"><h5>Виды спорта</h5><a>Хоккей</a><a>Футбол</a><a>Волейбол</a><a>Баскетбол</a><a>MMA</a></div>
+<div class="fcol"><h5>Компания</h5><a>Студия дизайна</a><a>Наши работы</a><a>Производство</a><a>О компании</a></div>
+<div class="fcol"><h5>Контакты</h5><a style="font-family:Montserrat;font-weight:800;font-size:19px;color:var(--ink)">8 800 555-17-05</a><a>team@sanger.ru</a></div>
+</div></div></footer>
+
+<script>
+// advantages
+var A=[["Индивидуальный дизайн","Уникальный стиль команды"],["Собственное производство","Полный контроль качества"],["Заказ от 5 комплектов","Выгодные условия для команд"],["Доставка по России","В любой регион"],["Помощь дизайнера","Бесплатно доработаем макет"]];
+document.getElementById('adv').innerHTML=A.map(function(a){return '<li><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 15.4 7.2 17.9l.9-5.4L4.2 8.7l5.4-.8L12 3Z" stroke="#E4141C" stroke-width="1.6" stroke-linejoin="round"/></svg><h3>'+a[0]+'</h3><p>'+a[1]+'</p></li>'}).join('');
+// sports
+var S=[["Хоккей","Джерси, гамаши, форма"],["Футбол","Футболки, шорты, гетры"],["Волейбол","Мужская и женская форма"],["Баскетбол","Майки, шорты, комплекты"],["MMA","Рашгарды, шорты, экипировка"]];
+document.getElementById('sgrid').innerHTML=S.map(function(s){return '<div class="scard"><div class="img ph" style="border-radius:0"><span class="t"><span class="n">'+s[0]+'</span><span class="s">фото дисциплины</span></span></div><div class="b"><div class="nm">'+s[0]+'</div><div class="ds">'+s[1]+'</div><div class="go">Перейти →</div></div></div>'}).join('');
+// jersey (мини-версия lib/jersey)
+function rgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]}
+function dark(h){var c=rgb(h);return .299*c[0]+.587*c[1]+.114*c[2]<140}
+function sh(h,p){var c=rgb(h);function f(t){return Math.max(0,Math.min(255,Math.round(t+p*2.55)))}return '#'+[f(c[0]),f(c[1]),f(c[2])].map(function(x){return x.toString(16).padStart(2,'0')}).join('')}
+function jersey(base,acc,num){var ink=dark(base)?acc:'#111';var st=sh(base,dark(base)?16:-14);
+return '<svg viewBox="0 0 300 340"><defs><pattern id="p" width="40" height="26" patternUnits="userSpaceOnUse"><rect width="40" height="26" fill="'+base+'"/><path d="M0 20 20 6 40 20 40 26 20 12 0 26Z" fill="'+st+'"/></pattern></defs>'
++'<path d="M52 46 4 108 50 154 62 128Z" fill="'+sh(base,-16)+'"/><path d="M248 46 296 108 250 154 238 128Z" fill="'+sh(base,-16)+'"/>'
++'<path d="M100 46C118 66 182 66 200 46L248 46 296 108 250 154 238 134 238 312Q238 326 224 326L76 326Q62 326 62 312L62 134 50 154 4 108 52 46Z" fill="url(#p)" stroke="rgba(0,0,0,.28)" stroke-width="1.4"/>'
++'<path d="M100 46C118 66 182 66 200 46L192 62C174 80 126 80 108 62Z" fill="'+acc+'"/>'
++'<rect x="6" y="146" width="46" height="8" rx="1" transform="rotate(-42 30 150)" fill="'+acc+'"/><rect x="248" y="146" width="46" height="8" rx="1" transform="rotate(42 270 150)" fill="'+acc+'"/>'
++'<text x="150" y="186" text-anchor="middle" font-family="Montserrat,Arial" font-weight="900" font-size="30" letter-spacing="4" fill="'+ink+'">SANGER</text>'
++'<text x="150" y="272" text-anchor="middle" font-family="Montserrat,Arial" font-weight="900" font-size="60" fill="'+ink+'">'+num+'</text></svg>'}
+document.getElementById('stage').innerHTML=jersey('#15171B','#E4141C','17');
+</script>
+</body></html>
