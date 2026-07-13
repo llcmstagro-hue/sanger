@@ -4,6 +4,14 @@
 
 Белая тема эталона: фон `#FAFAF8`, текст `#111111`, единый акцент — красный `#E4141C`.
 
+## Деплой (публичная ссылка)
+
+Проект — обычный Next.js, деплоится на Vercel без настройки (env-переменные для показа не нужны).
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/llcmstagro-hue/sanger)
+
+Вручную: [vercel.com/new](https://vercel.com/new) → войти через GitHub → импортировать `llcmstagro-hue/sanger` → выбрать ветку → **Deploy**. Через ~минуту будет ссылка вида `sanger-xxx.vercel.app`; каждый `git push` в ветку деплоится автоматически.
+
 ## Запуск
 
 ```bash
