@@ -9,14 +9,14 @@ import { track } from '@/lib/analytics';
 
 const NAV = [
   { href: '/#sports', label: 'Виды спорта' },
-  { href: '/#works', label: 'Наши работы' },
-  { href: '/#studio', label: 'Студия дизайна' },
   { href: '/#production', label: 'Производство' },
+  { href: '/#materials', label: 'Материалы' },
+  { href: '/studio', label: 'Студия дизайна' },
   { href: '/about', label: 'О компании' },
   { href: '/contacts', label: 'Контакты' },
 ];
 
-export function Header({ studioHref = '/#studio' }: { studioHref?: string }) {
+export function Header({ studioHref = '/#lead' }: { studioHref?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -60,7 +60,7 @@ export function Header({ studioHref = '/#studio' }: { studioHref?: string }) {
               onClick={() => track('create_form_click', { place: 'header' })}
               className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-red px-5 text-[13.5px] font-semibold text-white transition-all duration-300 ease-sanger hover:-translate-y-0.5 hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
-              Создать форму <ArrowRight />
+              Рассчитать стоимость <ArrowRight />
             </Link>
           </div>
           <button

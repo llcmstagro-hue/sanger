@@ -24,6 +24,14 @@ export interface Atmosphere {
   clientClub: string;
   /** короткая надпись-атмосфера под фигурой */
   scene: string;
+  /** надстрочник hero */
+  heroKicker: string;
+  /** заголовок hero построчно (крупный, uppercase) */
+  heroLines: string[];
+  /** индексы строк, окрашиваемых красным */
+  heroAccent: number[];
+  /** подзаголовок hero */
+  heroSub: string;
 }
 
 const RED = '#E4141C';
@@ -37,6 +45,10 @@ export const ATMOSPHERE: Record<SportSlug, Atmosphere> = {
     temperature: 'холодный свет · лёд',
     clientClub: 'МЕТЕОР',
     scene: 'Белый лёд · снежная пыль · динамика',
+    heroKicker: 'Хоккей · экипировка на заказ',
+    heroLines: ['Хоккей', 'в цветах', 'команды'],
+    heroAccent: [2],
+    heroSub: 'Джерси, гамаши и тренировочная форма с символикой вашего клуба. Собственное производство, от 5 комплектов.',
   },
   football: {
     tint: '#F4F7F3',
@@ -46,6 +58,10 @@ export const ATMOSPHERE: Record<SportSlug, Atmosphere> = {
     temperature: 'вечерний свет · стадион',
     clientClub: 'ТИТАН',
     scene: 'Большой стадион · газон · игрок в движении',
+    heroKicker: 'Футбол · экипировка на заказ',
+    heroLines: ['Футбол', 'вашего', 'клуба'],
+    heroAccent: [2],
+    heroSub: 'Игровые и тренировочные комплекты для клубов и любительских команд. Индивидуальный дизайн, от 5 комплектов.',
   },
   volleyball: {
     tint: '#F6F7FA',
@@ -55,6 +71,10 @@ export const ATMOSPHERE: Record<SportSlug, Atmosphere> = {
     temperature: 'чистый свет · арена',
     clientClub: 'ВЫСОТА',
     scene: 'Современная арена · прыжок · воздух',
+    heroKicker: 'Волейбол · экипировка на заказ',
+    heroLines: ['Волейбол', 'вашей', 'команды'],
+    heroAccent: [2],
+    heroSub: 'Мужские и женские комплекты с индивидуальным дизайном. Собственное производство, от 5 комплектов.',
   },
   basketball: {
     tint: '#FAF6F2',
@@ -64,6 +84,10 @@ export const ATMOSPHERE: Record<SportSlug, Atmosphere> = {
     temperature: 'тёплый контровой · паркет',
     clientClub: 'ФЕНИКС',
     scene: 'Большая арена · паркет · энергия',
+    heroKicker: 'Баскетбол · экипировка на заказ',
+    heroLines: ['Баскетбол', 'вашего', 'клуба'],
+    heroAccent: [2],
+    heroSub: 'Майки, шорты и двусторонние комплекты с дизайном вашей команды. Собственное производство, от 5 комплектов.',
   },
   mma: {
     tint: '#F3F4F5',
@@ -73,6 +97,10 @@ export const ATMOSPHERE: Record<SportSlug, Atmosphere> = {
     temperature: 'тёмный контровой · дым',
     clientClub: 'ЛЕГИОН',
     scene: 'Тёмный зал · дым · контровой свет',
+    heroKicker: 'Единоборства · экипировка на заказ',
+    heroLines: ['Форма', 'вашего', 'клуба'],
+    heroAccent: [2],
+    heroSub: 'Рашгарды, шорты, трико и командная экипировка для ММА, бокса и борьбы. Без кимоно. От 5 комплектов.',
   },
 };
 
@@ -85,6 +113,11 @@ export const HOME_ATMOSPHERE: Atmosphere = {
   temperature: 'белый ледяной свет',
   clientClub: 'ВАШ КЛУБ',
   scene: 'Форма с логотипом вашей команды',
+  heroKicker: 'SANGER · цифровая фабрика экипировки',
+  heroLines: ['Создай', 'форму', 'своей', 'команды'],
+  heroAccent: [3],
+  heroSub:
+    'Мы не продаём одежду — мы создаём визуальную идентичность команды. Разрабатываем дизайн, шьём и наносим символику вашего клуба. От 5 комплектов.',
 };
 
 export function getAtmosphere(slug: SportSlug): Atmosphere {

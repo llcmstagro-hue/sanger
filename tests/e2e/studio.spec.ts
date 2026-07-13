@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Студия дизайна', () => {
   test('смена цвета, фамилии, номера и переключение вида', async ({ page }) => {
-    await page.goto('/hockey');
+    await page.goto('/studio');
     const studio = page.locator('#studio');
     await studio.scrollIntoViewIfNeeded();
 
@@ -37,7 +37,7 @@ test.describe('Студия дизайна', () => {
   });
 
   test('кнопка «Получить расчёт» ведёт к форме', async ({ page }) => {
-    await page.goto('/hockey');
+    await page.goto('/studio');
     await page.locator('#studio').scrollIntoViewIfNeeded();
     const btn = page.getByRole('button', { name: 'Получить расчёт' }).first();
     await btn.click();

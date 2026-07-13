@@ -3,10 +3,10 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { HomeHero } from '@/components/home/HomeHero';
 import { SportsGrid } from '@/components/home/SportsGrid';
-import { WorksGallery } from '@/components/home/WorksGallery';
+import { ClientMarquee } from '@/components/marketing/ClientMarquee';
 import { Advantages } from '@/components/sports/Advantages';
-import { Studio } from '@/components/studio/Studio';
 import { Production } from '@/components/sports/Production';
+import { Materials } from '@/components/sports/Materials';
 import { OrderSteps } from '@/components/sports/OrderSteps';
 import { LeadForm } from '@/components/forms/LeadForm';
 
@@ -28,11 +28,11 @@ export default function HomePage() {
       <Header />
       <main>
         <HomeHero />
-        <Advantages />
+        <ClientMarquee />
         <SportsGrid />
-        <WorksGallery />
-        <Studio />
+        <Advantages />
         <Production />
+        <Materials />
         <OrderSteps />
         <LeadForm landing="home" />
       </main>

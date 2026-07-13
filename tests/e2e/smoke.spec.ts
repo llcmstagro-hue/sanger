@@ -18,11 +18,11 @@ test.describe('маршруты и базовая структура', () => {
 
   test('спортивная страница содержит нужные секции', async ({ page }) => {
     await page.goto('/hockey');
-    for (const id of ['sports', 'works', 'studio', 'production', 'faq', 'lead']) {
-      // не все id есть на всех страницах; studio/works/lead обязательны
-    }
-    await expect(page.locator('#studio')).toBeVisible();
-    await expect(page.locator('#works')).toBeVisible();
+    // структура ТЗ: производство, материалы, форма заявки — без «Наши работы»/конструктора
+    await expect(page.locator('#production')).toBeVisible();
+    await expect(page.locator('#materials')).toBeVisible();
     await expect(page.locator('#lead')).toBeVisible();
+    // конструктор ушёл на отдельную страницу
+    await expect(page.locator('#studio')).toHaveCount(0);
   });
 });

@@ -4,15 +4,15 @@ import { SPORT_ORDER, getSport } from '@/lib/sports';
 import type { SportSlug } from '@/types';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Hero } from '@/components/sports/Hero';
+import { SportHero } from '@/components/sports/SportHero';
+import { ClientMarquee } from '@/components/marketing/ClientMarquee';
 import { Advantages } from '@/components/sports/Advantages';
 import { Assortment } from '@/components/sports/Assortment';
-import { Works } from '@/components/sports/Works';
-import { Studio } from '@/components/studio/Studio';
 import { Production } from '@/components/sports/Production';
-import { WhySanger } from '@/components/sports/WhySanger';
+import { Materials } from '@/components/sports/Materials';
 import { OrderSteps } from '@/components/sports/OrderSteps';
 import { Accessories } from '@/components/sports/Accessories';
+import { SportsGrid } from '@/components/home/SportsGrid';
 import { Faq } from '@/components/sports/Faq';
 import { LeadForm } from '@/components/forms/LeadForm';
 import { PageView } from '@/components/sports/PageView';
@@ -74,17 +74,17 @@ export default function SportPage({ params }: { params: { sport: string } }) {
       <PageView sport={slug} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      <Header studioHref="#studio" />
+      <Header />
       <main>
-        <Hero sport={sport} studioHref="#studio" />
+        <SportHero slug={slug} />
+        <ClientMarquee />
         <Advantages />
         <Assortment sport={sport} />
-        <Works sport={sport} />
-        <Studio defaultSport={slug} />
         <Production />
-        <WhySanger />
+        <Materials />
         <OrderSteps />
         {sport.accessories && <Accessories />}
+        <SportsGrid />
         <Faq items={sport.faq} />
         <LeadForm landing={`/${slug}`} defaultSport={slug} />
       </main>
