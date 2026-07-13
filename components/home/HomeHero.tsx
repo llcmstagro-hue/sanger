@@ -18,6 +18,8 @@ export function HomeHero() {
       }}
       secondary={{ label: 'Смотреть видео', href: '#video' }}
       note="Собственное производство в России · от 5 комплектов"
+      imageSrc="/assets/hero/home.webp"
+      imageAlt="Хоккеист в форме с логотипом клуба на льду"
     />
   );
 }

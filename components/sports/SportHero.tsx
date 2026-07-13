@@ -20,6 +20,8 @@ export function SportHero({ slug }: { slug: SportSlug }) {
       }}
       secondary={{ label: 'Как проходит заказ', href: '#order' }}
       note="Собственное производство в России · от 5 комплектов"
+      imageSrc={`/assets/hero/${slug}.webp`}
+      imageAlt={`${a.heroKicker}: спортсмен в форме с символикой клуба`}
     />
   );
 }
