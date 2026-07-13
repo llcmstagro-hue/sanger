@@ -2,11 +2,11 @@ import { Container } from '@/components/ui/Container';
 import { Reveal } from '@/components/motion/Reveal';
 
 const ITEMS = [
-  { t: 'Индивидуальный дизайн', d: 'Уникальный стиль вашей команды' },
-  { t: 'Собственное производство', d: 'Полный контроль качества' },
-  { t: 'Заказ от 5 комплектов', d: 'Выгодные условия для команд' },
-  { t: 'Доставка по России', d: 'Быстро и надёжно в любой регион' },
-  { t: 'Помощь дизайнера', d: 'Бесплатно доработаем ваш макет' },
+  { t: 'Индивидуальный дизайн', d: 'Уникальный стиль и символика вашей команды' },
+  { t: 'Собственное производство', d: 'Полный цикл и контроль качества под одной крышей' },
+  { t: 'Заказ от 5 комплектов', d: 'Выгодные условия даже для небольшой команды' },
+  { t: 'Доставка по России', d: 'Быстро и надёжно в любой регион страны' },
+  { t: 'Помощь дизайнера', d: 'Бесплатно доработаем ваш макет до идеала' },
 ];
 
 function Ic({ i }: { i: number }) {
@@ -18,7 +18,7 @@ function Ic({ i }: { i: number }) {
     'M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z',
   ];
   return (
-    <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" aria-hidden="true">
       <path d={paths[i]} stroke="#E4141C" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );
@@ -26,18 +26,28 @@ function Ic({ i }: { i: number }) {
 
 export function Advantages() {
   return (
-    <section className="border-y border-line bg-paper2/50 py-4">
-      <Container>
-        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+    <section className="border-y border-line bg-line">
+      <Container className="px-0 sm:px-0 lg:px-0">
+        {/* gap-px + фон-линия = идеальные волосяные разделители при любом числе колонок */}
+        <ul className="grid grid-cols-2 gap-px md:grid-cols-3 lg:grid-cols-5">
           {ITEMS.map((it, i) => (
-            <li
-              key={it.t}
-              className="border-l border-line px-4 py-7 first:border-l-0 md:[&:nth-child(4)]:border-l-0 lg:[&:nth-child(4)]:border-l"
-            >
-              <Reveal delay={i * 0.05}>
-                <Ic i={i} />
-                <h3 className="mt-4 font-display text-[15px] font-bold uppercase text-ink">{it.t}</h3>
-                <p className="mt-1.5 text-[13.5px] leading-snug text-muted">{it.d}</p>
+            <li key={it.t} className="group relative bg-paper2/60 transition-colors duration-500 hover:bg-white">
+              <Reveal delay={i * 0.05} className="h-full">
+                <div className="relative flex h-full flex-col px-5 py-8 sm:px-6 sm:py-10">
+                  <span className="pointer-events-none absolute right-5 top-8 font-display text-[12px] font-bold tracking-[0.12em] text-line2 transition-colors duration-500 group-hover:text-red/70">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="grid h-11 w-11 place-items-center rounded-full border border-line2 transition-colors duration-500 group-hover:border-red/40">
+                    <Ic i={i} />
+                  </span>
+                  <h3 className="mt-5 font-display text-[15px] font-bold uppercase leading-tight tracking-tight text-ink">
+                    {it.t}
+                  </h3>
+                  <p className="mt-2 text-[13px] leading-snug text-muted sm:text-[13.5px]">{it.d}</p>
+                  <div className="mt-auto pt-6" aria-hidden="true">
+                    <span className="block h-[2px] w-8 origin-left bg-red/25 transition-all duration-500 group-hover:w-12 group-hover:bg-red" />
+                  </div>
+                </div>
               </Reveal>
             </li>
           ))}

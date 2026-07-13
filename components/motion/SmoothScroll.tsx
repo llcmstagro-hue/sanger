@@ -1,13 +1,23 @@
 'use client';
 import { useEffect } from 'react';
 import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Премиальный инерционный скролл. Отключается при prefers-reduced-motion и на
-// coarse-указателях с включённой экономией (мобилка остаётся нативно-плавной).
+// Премиальный инерционный скролл + каноническая связка с GSAP ScrollTrigger,
+// чтобы пиннинг производства был идеально синхронизирован с Lenis.
+// Отключается при prefers-reduced-motion (тогда работает нативный скролл,
+// а ScrollTrigger обновляется по нативным событиям).
 export function SmoothScroll() {
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (reduce) {
+      ScrollTrigger.refresh();
+      return;
+    }
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -19,12 +29,11 @@ export function SmoothScroll() {
 
     document.documentElement.classList.add('lenis');
 
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
+    // держим ScrollTrigger в такте с Lenis
+    lenis.on('scroll', ScrollTrigger.update);
+    const onTick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(onTick);
+    gsap.ticker.lagSmoothing(0);
 
     // якорные ссылки внутри страницы скроллим через Lenis
     const onClick = (e: MouseEvent) => {
@@ -41,7 +50,7 @@ export function SmoothScroll() {
     document.addEventListener('click', onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
+      gsap.ticker.remove(onTick);
       document.removeEventListener('click', onClick);
       document.documentElement.classList.remove('lenis');
       lenis.destroy();
