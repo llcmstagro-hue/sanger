@@ -9,13 +9,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        paper: '#FAFAF8',
-        paper2: '#F2F1EC',
+        paper: '#FFFFFF',
+        paper2: '#F5F6F8',
+        ice: '#F5F8FB',
         ink: '#111111',
         ink2: '#3A3A3A',
         muted: '#6B6B6B',
-        line: 'rgba(17,17,17,0.10)',
-        line2: 'rgba(17,17,17,0.16)',
+        line: 'rgba(17,17,17,0.08)',
+        line2: 'rgba(17,17,17,0.14)',
         red: {
           DEFAULT: '#E4141C',
           600: '#C90F16',

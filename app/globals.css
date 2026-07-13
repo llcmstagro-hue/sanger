@@ -11,8 +11,20 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* когда активен Lenis — управление скроллом отдаём ему */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
-  background: #fafaf8;
+  background: #ffffff;
   color: #111111;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

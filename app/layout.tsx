@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Montserrat, Manrope } from 'next/font/google';
 import './globals.css';
 import { AnalyticsProvider } from '@/components/motion/AnalyticsProvider';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
 
 const display = Montserrat({
   subsets: ['latin', 'cyrillic'],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className={`${display.variable} ${sans.variable}`}>
       <body className="font-sans">
+        <SmoothScroll />
         {children}
         <AnalyticsProvider />
       </body>
