@@ -23,7 +23,7 @@ for (const [name, w, h, mobile] of sizes) {
   page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
   page.on('pageerror', (e) => errs.push('PAGEERROR ' + e.message));
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 }).catch((e) => console.log('nav', e.message));
-  await page.waitForTimeout(3800); // дать интро-анимациям отыграть
+  await page.waitForTimeout(6500); // дать интро-анимациям отыграть (dev медленнее)
   // проверка горизонтального скролла
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   await page.screenshot({ path: `${outDir}/${name}.png`, fullPage: false });

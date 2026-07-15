@@ -31,14 +31,14 @@ export function Header({ studioHref = '/#lead' }: { studioHref?: string }) {
     <header
       className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ease-sanger ${
         scrolled
-          ? 'border-line bg-paper/85 backdrop-blur-md'
-          : 'border-transparent bg-transparent'
+          ? 'border-line bg-white/80 backdrop-blur-md'
+          : 'border-line/70 bg-white/55 backdrop-blur-md'
       }`}
     >
       <Container>
         <div
           className={`flex items-center gap-8 transition-all duration-300 ${
-            scrolled ? 'h-[60px]' : 'h-[74px]'
+            scrolled ? 'h-[72px]' : 'h-[92px]'
           }`}
         >
           <Logo />
