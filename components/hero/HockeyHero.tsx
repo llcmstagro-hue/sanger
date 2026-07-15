@@ -325,11 +325,12 @@ export function HockeyHero({ studioHref = '#lead' }: { studioHref?: string }) {
             className="relative flex flex-1 flex-col lg:hidden"
           >
             {/* свечение вокруг игрока */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[6svh] top-[24svh] z-[1] bg-[radial-gradient(58%_48%_at_58%_58%,rgba(208,227,244,0.7),transparent_72%)]" />
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[4svh] top-[40svh] z-[1] bg-[radial-gradient(60%_50%_at_60%_56%,rgba(208,227,244,0.7),transparent_72%)]" />
 
-            {/* хоккеист — крупный вертикальный кадр, поднят, главный объект (низ уходит под кнопку) */}
+            {/* хоккеист — крупный вертикальный кадр НИЖЕ заголовка: над шлемом есть воздух,
+                текст ничем не перекрыт (низ уходит под кнопку) */}
             <motion.div
-              className="pointer-events-none absolute inset-x-0 bottom-[6svh] top-[15svh] z-[2] will-change-transform"
+              className="pointer-events-none absolute inset-x-0 bottom-[1svh] top-[37svh] z-[2] will-change-transform"
               initial={reduce ? undefined : { opacity: 0, scale: 1.05, clipPath: 'inset(0% 0% 6% 0%)' }}
               animate={reduce ? undefined : { opacity: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
               transition={{ duration: 1.3, ease: EASE, delay: 0.25 }}
@@ -345,7 +346,7 @@ export function HockeyHero({ studioHref = '#lead' }: { studioHref?: string }) {
                   fill
                   priority
                   sizes="100vw"
-                  className="object-contain object-bottom"
+                  className="object-contain object-[64%_bottom]"
                 />
               </motion.div>
             </motion.div>
