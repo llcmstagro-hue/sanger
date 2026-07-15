@@ -1,11 +1,14 @@
 'use client';
 import { AtmosphereHero } from '@/components/hero/AtmosphereHero';
+import { HockeyHero } from '@/components/hero/HockeyHero';
 import { getAtmosphere } from '@/lib/atmosphere';
 import { track } from '@/lib/analytics';
 import type { SportSlug } from '@/types';
 
 export function SportHero({ slug }: { slug: SportSlug }) {
   const a = getAtmosphere(slug);
+  // TASK 001 — эталонный hero хоккейной страницы (отдельная сцена).
+  if (slug === 'hockey') return <HockeyHero studioHref="#lead" />;
   return (
     <AtmosphereHero
       atmosphere={a}
