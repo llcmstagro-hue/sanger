@@ -29,15 +29,25 @@
 - **Реальные фото спортсменов** (Higgsfield Soul, без watermark) в героях всех
   6 страниц: `public/assets/hero/*.webp`.
 
+## Сделано (Слой 4 — секционные фото)
+- Ветка: `claude/handoff-awwwards-polish-qm84tr` (ответвлена от `gotovo-spl632`).
+- Сгенерированы через higgsfield Soul 2.0 (2k, Plus — без watermark) и вшиты
+  вместо последних `<Placeholder/>` реальные фото (тёмная форма с абстрактным
+  крестом клиента, без вордмарка SANGER и без чужих брендов):
+  - Виды спорта — 5 карточек `public/assets/sports/*.webp`
+    (hockey/football/volleyball/basketball/mma), hover-scale + нижний градиент.
+  - Производство — 4 кадра `public/assets/production/*.webp`
+    (ткань, пошив, нанесение, контроль/упаковка).
+  - Аксессуары — `public/assets/accessories/{bag,cap}.webp`.
+- typecheck + прод-сборка + e2e smoke (18/18) зелёные.
+- ⚠️ Живой Netlify-деплой смотрит на `gotovo-spl632`. Чтобы фото появились на
+  https://harmonious-lollipop-19146b.netlify.app/, нужно смёржить эту ветку в
+  `gotovo-spl632` (или переключить production branch Netlify).
+
 ## Что дальше
-1. Открыть живой сайт (десктоп + мобайл 390px), оценить реальный рендер, собрать
-   список несоответствий уровню Nike/Apple/Awwwards.
-2. **Фото в секции** Производство/Материалы/Ассортимент: higgsfield Soul 2.0, 2k,
-   тёмная форма с абстрактным крестом клиента (без читаемого текста/бренда,
-   без watermark) → скачать по URL → `public/assets/` → заменить `<Placeholder/>`
-   на `next/image`.
-3. Доводка композиции/типографики/мобайла/конверсии.
-4. По желанию — приём заявок в Telegram (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`),
+1. Смёржить ветку в production-ветку Netlify, чтобы увидеть фото на живом деплое.
+2. Дальнейшая доводка композиции/типографики/мобайла/конверсии.
+3. По желанию — приём заявок в Telegram (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`),
    код в `app/api/lead/route.ts`.
 
 ## Правила
