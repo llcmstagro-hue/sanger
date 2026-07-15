@@ -89,9 +89,12 @@ function TrustRow({ className = '' }: { className?: string }) {
   );
 }
 
-function Headline({ reduce }: { reduce: boolean | null }) {
+function Headline({ reduce, lead = '0.9' }: { reduce: boolean | null; lead?: string }) {
   return (
-    <h1 className="font-display font-black uppercase leading-[0.9] tracking-[-0.02em] text-ink text-[clamp(40px,6.4vw,84px)]">
+    <h1
+      className="font-display font-black uppercase tracking-[-0.02em] text-ink text-[clamp(40px,6.4vw,84px)]"
+      style={{ lineHeight: lead }}
+    >
       {HEADLINE.map((w, i) => (
         <span key={w} className="block overflow-hidden">
           <motion.span
@@ -315,42 +318,99 @@ export function HockeyHero({ studioHref = '#lead' }: { studioHref?: string }) {
             </div>
           </motion.div>
 
-          {/* ═══ MOBILE ═══ */}
+          {/* ═══ MOBILE (доведено до премиум-уровня, десктоп не затронут) ═══ */}
           <motion.div
             initial={reduce ? undefined : 'hidden'}
             animate={reduce ? undefined : 'show'}
-            className="flex flex-1 flex-col lg:hidden"
+            className="relative flex flex-1 flex-col lg:hidden"
           >
-            <div className="relative z-[4] pt-2">
-              <motion.div variants={fade(0.2)} className="mb-3.5 inline-flex items-center gap-2.5">
-                <span className="h-px w-6 bg-red" />
-                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-red">Создаём командный дух</span>
-              </motion.div>
-              <Headline reduce={reduce} />
-            </div>
+            {/* свечение вокруг игрока */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-[6svh] top-[24svh] z-[1] bg-[radial-gradient(58%_48%_at_58%_58%,rgba(208,227,244,0.7),transparent_72%)]" />
 
-            {/* хоккеист — своя мобильная раскладка (целиком в кадре, без наложения на текст) */}
-            <div className="relative min-h-0 flex-1">
+            {/* хоккеист — крупный вертикальный кадр, поднят, главный объект (низ уходит под кнопку) */}
+            <motion.div
+              className="pointer-events-none absolute inset-x-0 bottom-[6svh] top-[15svh] z-[2] will-change-transform"
+              initial={reduce ? undefined : { opacity: 0, scale: 1.05, clipPath: 'inset(0% 0% 6% 0%)' }}
+              animate={reduce ? undefined : { opacity: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+              transition={{ duration: 1.3, ease: EASE, delay: 0.25 }}
+            >
               <motion.div
-                className="absolute inset-x-[-8%] bottom-0 top-0 will-change-transform"
-                initial={reduce ? undefined : { opacity: 0, scale: 1.04, y: 18, clipPath: 'inset(0% 0% 8% 0%)' }}
-                animate={reduce ? undefined : { opacity: 1, scale: 1, y: 0, clipPath: 'inset(0% 0% 0% 0%)' }}
-                transition={{ duration: 1.1, ease: EASE, delay: 0.3 }}
+                className="relative h-full w-full"
+                animate={reduce ? undefined : { scale: [1, 1.008, 1] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
               >
                 <Image
-                  src="/assets/hero/hockey-player.webp"
+                  src="/assets/hero/hockey-player-mobile.webp"
                   alt="Хоккеист команды-клиента в форме с логотипом их клуба на льду"
                   fill
                   priority
-                  sizes="116vw"
+                  sizes="100vw"
                   className="object-contain object-bottom"
                 />
               </motion.div>
+            </motion.div>
+
+            {/* нижний скрим — читаемость управления поверх игрока */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[34svh] bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.86)_56%,#FFFFFF_100%)]" />
+
+            {/* заголовок */}
+            <div className="relative z-[4] pt-2">
+              <motion.div variants={fade(0.2)} className="mb-3.5 inline-flex items-center gap-2.5">
+                <motion.span
+                  className="h-px w-6 origin-left bg-red"
+                  animate={reduce ? undefined : { scaleX: [1, 1.55, 1], opacity: [0.85, 1, 0.85] }}
+                  transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                <span className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-red">Создаём командный дух</span>
+              </motion.div>
+              <Headline reduce={reduce} lead="0.98" />
             </div>
 
-            <motion.div variants={fade(1.0)} className="relative z-[4] pb-6">
-              <Ctas studioHref={studioHref} compact />
-              <TrustRow className="mt-5 justify-center" />
+            <div className="flex-1" />
+
+            {/* управление */}
+            <motion.div variants={fade(1.0)} className="relative z-[4] pb-7">
+              {/* CTA с мягким свечением раз в ~10с */}
+              <div className="relative mx-auto w-full max-w-[460px]">
+                {!reduce && (
+                  <motion.span
+                    aria-hidden
+                    className="pointer-events-none absolute -inset-1.5 rounded-[34px] bg-red/45 blur-xl"
+                    animate={{ opacity: [0, 0.55, 0] }}
+                    transition={{ duration: 2.6, repeat: Infinity, repeatDelay: 8, ease: 'easeInOut' }}
+                  />
+                )}
+                <a
+                  href={studioHref}
+                  onClick={() => track('create_form_click', { place: 'hockey_hero' })}
+                  className="group relative flex min-h-[60px] w-full items-center justify-center gap-2.5 rounded-[30px] bg-[linear-gradient(180deg,#F12831_0%,#E4141C_52%,#C90F16_100%)] px-8 text-[15.5px] font-semibold text-white shadow-[0_22px_46px_-18px_rgba(228,20,28,0.9)] transition-transform duration-200 ease-sanger active:scale-[0.975] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red"
+                >
+                  Рассчитать стоимость
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden>
+                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              </div>
+
+              {/* Смотреть видео — стеклянная кнопка Play */}
+              <a href="#production" className="mx-auto mt-3.5 flex w-fit items-center justify-center gap-3 text-[14.5px] font-semibold text-ink">
+                <span className="grid h-11 w-11 place-items-center rounded-full bg-white/45 text-ink shadow-[0_10px_26px_-12px_rgba(17,17,17,0.5)] ring-1 ring-white/60 backdrop-blur-md transition-transform duration-200 ease-sanger active:scale-90">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+                Смотреть видео
+              </a>
+
+              {/* преимущества — тонкие разделители, единый baseline */}
+              <ul className="mx-auto mt-6 flex w-fit flex-wrap items-center justify-center gap-x-3 gap-y-2 text-ink2">
+                {TRUST.map((t) => (
+                  <li key={t.label} className="flex items-center gap-1.5 border-line pl-3 [&:not(:first-child)]:border-l">
+                    <span className="text-red"><TrustIcon kind={t.kind} /></span>
+                    <span className="text-[11px] font-medium leading-none tracking-[0.01em]">{t.label}</span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           </motion.div>
         </Container>
