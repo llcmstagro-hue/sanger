@@ -1,35 +1,68 @@
 ---
 name: trust-calibration
-description: Attach citations, file paths, and confirmation signals to claims about the SANGER codebase so the user can independently verify them, and clearly separate verified facts from assumptions. Use whenever reporting findings, asserting how code behaves, quoting config values, or making claims a user might act on without checking.
+description: Governs how an agent earns trust through evidence — citing sources for factual claims, separating verified facts from inference and speculation, saying "I don't know" cleanly, and never fabricating specifics. Use when producing factual output, answering data questions, or reviewing agent responses for unsupported claims.
 ---
 
-# Trust-calibration
+# Trust Calibration: Citations and Evidence Signals
 
-Make every non-trivial claim verifiable by anchoring it to a source, and never present an assumption as a confirmed fact.
+An agent is trusted exactly to the degree that its claims survive checking. Make every claim checkable, and mark every claim that isn't.
 
-## When to use
-- Reporting what a file, component, or config does after reading it.
-- Stating that a build passes, a test runs, or a route exists.
-- Quoting a value (env var, Tailwind token, dependency version, copy string).
-- Summarizing behavior across multiple files for the parent agent or user.
-- Making any claim the user might rely on without re-checking.
+## Cite sources for factual claims
 
-## Method
-1. For each factual claim, attach its source: an absolute file path plus line, a command you ran, or a URL. No source means it is an assumption, not a fact.
-2. Distinguish three tiers explicitly:
-   - Verified: "I ran `npm run build` and it exited 0."
-   - Read-but-inferred: "`Hero.tsx:42` sets the CTA text; I did not render it."
-   - Assumed: "I assume the deploy target is Vercel (not confirmed in repo)."
-3. Prefer showing the load-bearing evidence over describing it: quote the exact line when the wording matters.
-4. When you did not verify something you'd normally check (didn't run the build, didn't open the file), say so plainly instead of implying you did.
-5. Confirm dynamic claims by execution, not memory: run the command, read the file, hit the route. Package versions, script names, and config come from the repo, not recollection.
-6. For external facts (library behavior, API limits), cite a doc URL or mark as needing lookup rather than asserting from training data.
-7. When two sources conflict (docs vs. code), report both and say which you trust and why.
+- Attach a source to every non-obvious factual claim: a file path, a document name, a URL, a tool result, a database record, or "per your message above." The reader should be able to verify without asking where a claim came from.
+- Cite at the claim level, not the document level. "The purchase contract (Section 12, p. 4) sets closing at 45 days" — not "see the contract."
+- When summarizing a source, quote the load-bearing phrase verbatim if precision matters (deadlines, amounts, contingency language). Paraphrase drifts; quotes don't.
+- If multiple sources conflict, present the conflict with both citations. Do not silently pick one.
+- A claim with no available source is not a fact — downgrade it to inference or remove it.
 
-## Checklist
-- [ ] Every factual claim has a source: file:line, a command run, or a URL.
-- [ ] Verified facts, inferences, and assumptions are visibly labeled, not blended.
-- [ ] Values (versions, tokens, copy) were quoted from the repo, not recalled.
-- [ ] Anything not actually run or read is stated as unverified.
-- [ ] File paths given are absolute so the user can jump straight to them.
-- [ ] No confident claim rests on memory where the repo could be checked.
+## The three-tier evidence ladder
+
+Label claims by tier, and never let a lower tier wear a higher tier's confidence:
+
+1. **Verified**: You looked at the source in this session. "The listing agreement expires 2026-09-30 (per the signed PDF in this project)."
+2. **Inference**: Derived from verified facts by stated reasoning. "The inspection contingency likely expires next week — the contract sets 14 days from acceptance, and acceptance was July 1." Show the reasoning; an inference with hidden steps is indistinguishable from a guess.
+3. **Speculation**: Plausible but unsupported. Mark it in-line: "Speculating: the delay may be lender turnaround, but I have no evidence for that."
+
+Signal the tier in the sentence itself, not in a footnote. Phrases that do this cheaply: "confirmed in…", "based on X, I infer…", "unverified, but…", "I have not checked this."
+
+## Say "I don't know" cleanly
+
+The clean form has three parts:
+1. State the gap plainly: "I don't know the current payoff amount."
+2. State why: "It isn't in any document in this project, and I have no access to the lender portal."
+3. State the path to knowing: "The escrow officer can request it; want me to draft that email?"
+
+Rules:
+- Never pad an "I don't know" with a guess that sounds like an answer. "It's typically around X" placed where a real number was requested will be read as the real number.
+- Never answer a different, easier question instead. If asked for the exact HOA fee and you only know the range, say the range is all you have and label it as such.
+- A fast, clean "I don't know" builds more trust than a slow, hedged maybe.
+
+## Never fabricate specifics
+
+Specifics are where fabrication does the most damage because they look most credible. Hard rules:
+
+- **Prices, fees, and amounts**: Never invent a number. No estimated commission splits, tax amounts, or comparable sale prices without a source. If asked for one, retrieve it or decline with a path.
+- **Dates and deadlines**: Never state a contractual or statutory deadline from memory of "how it usually works." Read the actual document. A wrong deadline in a real estate transaction can kill a deal.
+- **Statutes, regulations, and forms**: Never cite a statute number, HRS section, or form revision you have not verified this session. A plausible-but-wrong citation is worse than none — it will be relied on. Say "there is a Hawaiʻi disclosure requirement for this; I'd need to confirm the exact provision" instead.
+- **Names, addresses, MLS numbers**: Copy from source, never reconstruct. If the source isn't available, use an explicit placeholder like `[MLS# — confirm]`, never a realistic-looking guess.
+- **Quotes**: Never present a paraphrase in quotation marks.
+
+If you notice you have produced a specific without a source, correct it immediately and visibly — do not hope it goes unnoticed.
+
+## Output checklist
+
+Before delivering any factual response, verify:
+
+- [ ] Every non-obvious claim has a citation or an explicit tier label
+- [ ] No number, date, statute, or name appears without a source or `[confirm]` placeholder
+- [ ] Inferences show their reasoning; speculation is flagged in-line
+- [ ] Conflicting sources are surfaced, not resolved silently
+- [ ] Gaps are stated as gaps, each with a path to resolution
+- [ ] Nothing hedged in your head is stated confidently on the page
+
+## Anti-patterns
+
+- **Confidence laundering**: Repeating an unverified claim from earlier in the conversation as if it were established. Re-verify or re-label.
+- **Citation theater**: Citing a source that does not actually contain the claim. Spot-check your own citations before delivering.
+- **The plausible composite**: Blending two real facts into one false one (right price, wrong property). When copying specifics, copy them one at a time from the source.
+- **Hedging everything equally**: If every sentence says "likely" and "may," the reader cannot find the claims you are actually sure of. Reserve hedges for real uncertainty.

@@ -1,33 +1,72 @@
 ---
 name: hi-fi-mockups
-description: Produces high-fidelity, pixel-accurate mockups of a page or section before writing production code, so design intent is locked and agreed before build. Use when starting a new page/section (a sport landing, the Studio, the lead form), when a redesign is requested, or when a stakeholder wants to preview look-and-feel before committing engineering time.
+description: Builds high-fidelity UI mockups as self-contained HTML/CSS pages with realistic data, real device frames, and explicit states. Use when the user asks for a mockup, wireframe, UI concept, screen design, or wants to compare design options before committing to implementation.
 ---
 
-# Hi-Fi Mockups
+# High-Fidelity Mockups
 
-Lock the visual design of a SANGER page/section as a self-contained, pixel-accurate mockup before touching production components, so intent is agreed up front and the build becomes a faithful translation.
+Produce mockups that look like screenshots of a shipped product, not diagrams of one. A mockup that stakeholders can't mistake for the real thing gets real feedback; a gray-box wireframe gets shrugs.
 
-## When to use
-- A new page or section is requested (new sport route under `app/[sport]`, a Studio revamp, a new hero).
-- A redesign of an existing section where visual direction is uncertain.
-- Before estimating or building, when the "look" must be signed off first.
-- When comparing 2-3 layout directions side by side.
+## Core rules
 
-## Method
-1. Gather constraints: read `tailwind.config.ts` for the real tokens (colors, spacing, fonts, breakpoints) and `app/globals.css` for CSS vars. The mockup MUST use these, not invented values.
-2. Pull reference content from `lib/sports.ts`, `lib/studioAssets.ts`, or the relevant data file so copy and imagery are realistic, not lorem ipsum.
-3. Build the mockup as a single static HTML file (inline `<style>` using the project palette) or a throwaway `.tsx` under `preview/`. Do not wire it into routing or the Zustand store yet.
-4. Match reality: exact hex values, font stack, border radii, shadow ramp, and the 8pt spacing rhythm. Include the mobile breakpoint (`sm`) and desktop side by side.
-5. Represent interaction states statically: hover, focus, active, error, empty, loading. For the lead form show validation-error and success states; for the Studio show a configured jersey state.
-6. Annotate: add short callouts naming the Tailwind classes/tokens each block should map to, so the build step is mechanical.
-7. Render and screenshot (Playwright or browser) at 390px and 1440px widths. Present both for sign-off.
-8. Only after approval, translate the mockup into real components under `components/` and remove the throwaway file.
+1. **Self-contained HTML/CSS only.** One file, inline `<style>`, no external CDNs, fonts embedded via system stacks or data URIs. It must render identically when opened from disk or published as an Artifact.
+2. **Realistic data, never lorem ipsum.** Invent plausible names, prices, dates, addresses, and copy that match the product domain. "Kailua 3bd/2ba — $1,285,000" sells the design; "Lorem ipsum dolor" kills it. Never use real client PII — invent people.
+3. **Real viewport sizes.** Render inside an accurate device frame or fixed-size stage:
+   - Phone: 390 x 844 (iPhone-class), 360 x 800 (Android-class)
+   - Tablet: 834 x 1194
+   - Laptop: 1440 x 900; Desktop: 1920 x 1080
+   Draw the frame as a rounded-rect chrome around a fixed-size inner viewport so proportions are honest.
+4. **Design at 100% zoom.** No scaled-down thumbnails as the primary deliverable; scale the *stage*, not the type.
 
-## Checklist
-- [ ] Mockup uses actual `tailwind.config.ts` tokens (no invented colors/spacing).
-- [ ] Realistic copy/imagery sourced from `lib/` data, not placeholders.
-- [ ] Mobile (390px) and desktop (1440px) both shown.
-- [ ] Interaction/edge states represented (hover, focus, error, empty, loading, success).
-- [ ] Token/class annotations included for a mechanical build handoff.
-- [ ] Throwaway mockup kept out of routing/store until approved, then deleted.
-- [ ] Stakeholder sign-off recorded before production code begins.
+## Show states, not just the happy path
+
+Every interactive mockup should include at least three of:
+
+- Default / populated state
+- Empty state (first-run: what does the user see with zero data?)
+- Loading state (skeletons, not spinners, for content areas)
+- Error / validation state (inline messages, exact copy)
+- Edge cases: longest realistic string (a 42-character name, a $12,450,000 price), 0 items, 1 item, 200 items, offline
+
+Label each state clearly above its frame ("Empty state — no saved listings").
+
+## Presenting multiple options
+
+When the user is choosing a direction, present 2–4 options side by side on one canvas:
+
+- Same data in every option — vary only the design, so the comparison is fair.
+- Give each option a short name and a one-line rationale ("Option B — Card grid: faster scanning, weaker hierarchy").
+- Never present a decoy you don't believe in; every option must be shippable.
+- Recommend one, with reasons, but make the recommendation visually neutral (no gold star on your favorite).
+
+Canvas layout for comparisons:
+
+```html
+<div style="display:flex; gap:48px; padding:48px; overflow-x:auto; background:#f0f0f3;">
+  <figure><figcaption>Option A — List</figcaption><div class="device">…</div></figure>
+  <figure><figcaption>Option B — Cards</figcaption><div class="device">…</div></figure>
+</div>
+```
+
+## Fidelity checklist (run before delivering)
+
+- [ ] Real typography scale (e.g. 12/14/16/20/24/32) — no arbitrary sizes
+- [ ] Consistent spacing on a 4px or 8px grid
+- [ ] Actual icons (inline SVG), not emoji, for UI chrome
+- [ ] Shadows/elevation used sparingly and consistently
+- [ ] Touch targets >= 44px on mobile frames
+- [ ] Text contrast >= 4.5:1 for body copy
+- [ ] Status bar / URL bar hinted in device frames so context reads instantly
+- [ ] All numbers internally consistent (totals sum, dates in order)
+
+## Anti-patterns
+
+- Placeholder gray boxes labeled "image" — use CSS gradients or inline SVG scenes instead.
+- Buttons that say "Button", nav items that say "Link 1".
+- A single frame when the flow spans steps — show the sequence.
+- Mixing fidelity levels in one deliverable (a hi-fi screen next to a sketch reads as unfinished).
+- Making it interactive when the ask was visual — fake affordances (hover states drawn statically) are fine; half-working JS is not.
+
+## Delivery
+
+Publish via the Artifact tool when available so the user views it in-browser. Name frames and states in the page itself — the mockup should be self-explanatory when forwarded to someone who never saw this conversation.

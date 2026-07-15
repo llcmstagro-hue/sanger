@@ -1,32 +1,106 @@
 ---
 name: theme-factory
-description: Generates cohesive light and dark color palettes from a single seed color using OKLCH, producing tokenized scales for background, surface, text, borders, and accent. Trigger when creating or extending a theme, adding dark mode, deriving tints/shades, or building a color token set from a brand color.
+description: Generates a complete UI theme from a single seed color — 10-step color ramps, semantic tokens (background/surface/border/text/accent), coordinated light and dark variants, and WCAG AA contrast verification. Use when creating or overhauling a color system, theming an app, or producing dark mode from an existing palette.
 ---
 
 # Theme Factory
 
-Turn one seed color (e.g. SANGER red `#E4141C`) into a full, consistent light+dark theme using OKLCH so lightness stays perceptually even.
+Given a seed color, produce a full theme: ramps → semantic tokens → light/dark variants → contrast check. Work in OKLCH throughout; convert to hex only for final output if required.
 
-## When to use
-- Bootstrapping a theme or color-token file.
-- Adding a dark mode that mirrors the light theme.
-- Deriving a ramp of tints/shades from a brand or accent color.
+## Step 1: Normalize the seed
 
-## Method
-1. Convert the seed to OKLCH and record its `L C H`. For SANGER red that's roughly `oklch(0.55 0.22 25)`. Hue (H) is the brand anchor — keep it fixed across the accent ramp.
-2. Build the accent ramp by varying L in even steps while gently reducing C at the extremes (very light/dark colors can't hold high chroma): e.g. 0.95, 0.85, 0.72, 0.62, 0.55 (base), 0.46, 0.38, 0.30 at hue 25.
-3. Derive neutrals from the accent hue for warmth, not pure gray: use very low chroma (C ≈ 0.005–0.02) at the same or nearby hue. This gives paper `oklch(0.98 0.005 95)` (SANGER `#FAFAF8`) and ink `oklch(0.18 0 0)` (`#111`) a subtle relationship.
-4. Define semantic tokens, not raw colors: `--bg`, `--surface`, `--surface-2`, `--text`, `--text-muted`, `--border`, `--accent`, `--accent-hover`, `--focus`. Components reference only semantic tokens.
-5. Generate the dark theme by inverting lightness intent, not by flipping values 1:1. Backgrounds go dark but not pure black (`oklch(0.16 0.005 95)`), text goes to a soft off-white (`oklch(0.95 0 0)`), and the accent usually needs +L / slightly -C to stay vivid on dark.
-6. Hold contrast, not lightness: check every text/bg pair against WCAG AA (4.5:1 body, 3:1 large). OKLCH lightness is a good proxy but verify actual contrast ratios.
-7. Emit as CSS variables under `:root` and `[data-theme="dark"]` (or `.dark`), wired into `tailwind.config` theme colors so classes like `bg-surface text-muted` work.
-8. Keep chroma restrained overall for a premium feel — one saturated accent against near-neutral surfaces, matching the SANGER single-red discipline.
+Convert the seed to OKLCH. Note its hue (H) and chroma (C). If the seed is very dark or light, treat it as one step of the ramp (usually 600 or 500) and rebuild the rest around it rather than forcing it to be the midpoint.
 
-## Checklist
-- [ ] Seed converted to OKLCH; accent ramp shares one fixed hue.
-- [ ] Chroma reduced at light/dark extremes so colors stay clean.
-- [ ] Neutrals carry a faint shared hue, not pure gray.
-- [ ] Semantic tokens defined; components reference only those.
-- [ ] Dark theme derived by intent, backgrounds not pure black.
-- [ ] Every text/bg pair passes WCAG AA (verified ratios).
-- [ ] Tokens emitted as CSS vars and wired into tailwind.config.
+## Step 2: Build the accent ramp (10 steps)
+
+Fix the hue, vary lightness on a fixed schedule, and taper chroma at the extremes (high chroma is impossible near white/black in gamut):
+
+| Step | L | C (× seed C) |
+|---|---|---|
+| 50  | 0.97 | 0.15 |
+| 100 | 0.94 | 0.30 |
+| 200 | 0.88 | 0.50 |
+| 300 | 0.80 | 0.75 |
+| 400 | 0.70 | 0.90 |
+| 500 | 0.62 | 1.00 |
+| 600 | 0.54 | 1.00 |
+| 700 | 0.46 | 0.90 |
+| 800 | 0.38 | 0.75 |
+| 900 | 0.28 | 0.55 |
+
+Allow hue drift of ±3–6° toward warm at the light end if the raw ramp looks dull. Clamp any out-of-gamut colors by reducing C, never by shifting L (preserves the lightness schedule).
+
+## Step 3: Build the neutral ramp
+
+Same 10 L-steps, but C = 0.005–0.02 with the seed's hue (or its complement for a cooler feel). Pure gray (C = 0) looks dead next to a chromatic accent. Also generate status ramps by reusing the schedule with fixed hues: success H≈150, warning H≈85, danger H≈25, info H≈250 — matching the neutral's chroma temperament.
+
+## Step 4: Map semantic tokens
+
+Semantic tokens are the only names components may use. Ramp steps are internal.
+
+```css
+:root {
+  --background:      var(--neutral-50);
+  --surface:         oklch(1 0 0);          /* cards, inputs */
+  --surface-raised:  oklch(1 0 0);          /* + shadow for elevation */
+  --border:          var(--neutral-200);
+  --border-strong:   var(--neutral-300);
+  --text:            var(--neutral-900);
+  --text-muted:      var(--neutral-500);
+  --accent:          var(--accent-600);
+  --accent-hover:    var(--accent-700);
+  --accent-subtle:   var(--accent-100);     /* tinted backgrounds */
+  --on-accent:       oklch(0.98 0.01 var(--accent-h)); /* text on accent */
+}
+```
+
+## Step 5: Dark variant
+
+Dark mode is not inversion. Rules:
+
+- Background: L 0.14–0.20 with the neutral's hue, never pure black (except OLED-targeted themes).
+- Elevation flips from shadows to lightness: surface = background + 0.04 L, raised = + 0.07 L. Shadows are nearly invisible on dark.
+- Accent: lighten by 1–2 ramp steps (600 → 400/500) and cut chroma ~10–20% — saturated colors vibrate on dark backgrounds.
+- Text: L ≈ 0.90 primary (not white), L ≈ 0.65 muted. Reduce contrast slightly vs light mode to avoid glare.
+- Borders: background + 0.10–0.12 L; hairlines need more contrast on dark than light.
+
+```css
+[data-theme="dark"] {
+  --background: oklch(0.16 0.01 var(--h));
+  --surface:    oklch(0.20 0.012 var(--h));
+  --border:     oklch(0.28 0.012 var(--h));
+  --text:       oklch(0.90 0.008 var(--h));
+  --text-muted: oklch(0.65 0.01 var(--h));
+  --accent:     var(--accent-400);
+  --accent-subtle: oklch(0.25 0.06 var(--accent-h));
+}
+```
+
+## Step 6: Contrast verification (WCAG AA)
+
+Check every foreground/background pair actually used. Requirements: 4.5:1 normal text, 3:1 large text (≥24px or ≥18.66px bold) and UI components/borders of controls.
+
+Verify programmatically — never eyeball it:
+
+```js
+// npx: culori
+import { wcagContrast } from "culori";
+const pairs = [
+  ["--text", "--background"], ["--text", "--surface"],
+  ["--text-muted", "--background"], ["--on-accent", "--accent"],
+  ["--accent", "--background"], // link text
+];
+for (const [fg, bg] of pairs) {
+  const ratio = wcagContrast(resolve(fg), resolve(bg));
+  console.log(fg, "on", bg, ratio.toFixed(2), ratio >= 4.5 ? "PASS" : "FAIL");
+}
+```
+
+Failure fixes, in order of preference: adjust L of the token (keep hue/chroma), pick an adjacent ramp step, or restrict the pairing to large text only. Repeat the check for the dark variant — dark-mode muted text is the most common AA failure.
+
+## Deliverable checklist
+
+- Accent ramp (10 steps), neutral ramp (10 steps), status ramps.
+- Semantic token block for light and dark, components referencing only semantic tokens.
+- Contrast table for both modes with PASS/FAIL per pair; all required pairs PASS AA.
+- A small swatch/demo page rendering both modes side by side for visual sanity check.

@@ -1,33 +1,76 @@
 ---
 name: feedback-loops
-description: Keeps an in-code trail of accepted decisions and notable edits (a DECISIONS log / CHANGELOG) so intent and rationale are preserved for future turns and contributors. Use after making a non-obvious design/architecture choice, resolving a tradeoff, or completing a meaningful change worth remembering.
+description: Logs accepted versus rejected edits during a session to learn the user's preferences — tracking what they kept, changed, or reverted, adjusting defaults accordingly, and summarizing learned preferences back to them. Use in any multi-round editing or design session where the user is reviewing and reacting to generated work.
 ---
 
 # Feedback Loops
 
-Preserve the "why" behind changes in a durable, in-repo trail, so decisions are not re-litigated and future work inherits the rationale, not just the code.
+Every user reaction to your output is a labeled training example. A session where the user corrects the same thing three times is a session where you ignored two labels. Track the labels, update your defaults, and prove it by not repeating the mistake.
 
-## When to use
-- A non-obvious architecture/design decision was made (state shape, token change, API contract for `app/api/lead/route.ts`).
-- A tradeoff was resolved (e.g. chose Zustand slice over prop drilling; chose SSR over client fetch).
-- A meaningful feature/section shipped or a convention was established.
-- Reversing or superseding an earlier decision.
+## What counts as a signal
 
-## Method
-1. Maintain a single durable log. Prefer a `DECISIONS.md` at the repo root (lightweight ADR style); use `REPORT.md`/`README.md` only if the team already tracks decisions there. Do not scatter rationale across code comments alone.
-2. Record entries in a consistent shape: date, short title, context (what prompted it), decision (what was chosen), rationale (why, alternatives rejected), and impact (files/areas touched). Keep each entry short — a few lines.
-3. Log outcomes, not just intentions: capture what was actually accepted/merged, so the trail reflects reality.
-4. Cross-reference code: when a decision constrains a file (e.g. "all brand colors live in `tailwind.config.ts`"), name that file so future edits find the rule.
-5. Supersede, don't delete: when a decision changes, add a new entry marking the old one superseded and why, preserving history.
-6. Keep it skimmable: newest first, one screen per entry max; link to a PR/commit for full detail rather than pasting diffs.
-7. Tie into other skills: brandkit-sync token changes, turn-repair reconciliations, and figma-mcp divergences should each leave an entry here.
-8. Review the log at the start of related work to inherit prior rationale before making a conflicting choice.
+| User action | Label | Strength |
+|---|---|---|
+| Uses/forwards your output unchanged | Accept | Strong |
+| "Perfect", "yes, like that" | Accept | Strong |
+| Keeps output but silently edits a part | Partial reject of that part | Strong |
+| Asks for a change ("shorter", "less red") | Reject of that dimension | Strong |
+| Reverts to an earlier version | Reject of everything since | Strong |
+| Moves on without comment | Weak accept | Weak |
+| Re-asks the original question | Reject of the whole approach | Strong |
 
-## Checklist
-- [ ] A single durable decisions log exists and is used (not scattered comments).
-- [ ] Entry captures context, decision, rationale, and impact concisely.
-- [ ] Accepted/merged outcome recorded, not just the plan.
-- [ ] Affected files named so the rule is discoverable from code.
-- [ ] Superseded decisions marked, not deleted.
-- [ ] Newest-first, skimmable, links out for detail.
-- [ ] Existing log reviewed before making related decisions.
+Silent edits are the highest-value signal most sessions waste: when the user pastes back a modified version of your text, diff it mentally against what you gave them — every change is a preference statement.
+
+## Keep a running preference ledger
+
+Maintain an explicit (internal) ledger during the session; for long sessions, keep it as a scratchpad file rather than trusting recall:
+
+```
+PREFERENCES (this session)
+- Tone: shorter than my default; no exclamation points [2 corrections]
+- Headings: sentence case, not Title Case [silent edit, msg 6]
+- Colors: prefers muted accents; rejected saturated red twice
+- Structure: wants bullets over paragraphs in summaries [kept 3/3]
+REJECTED APPROACHES
+- Option-menu replies ("A or B or C?") — user picked none, restated goal
+OPEN QUESTIONS
+- Table vs chart for comps — mixed signals (kept table once, asked for chart once)
+```
+
+Rules for the ledger:
+- Record the evidence (which message, kept/changed/reverted), not just the conclusion — evidence lets you weigh conflicts later.
+- One correction = tentative preference; two consistent signals = default changed; contradicting signals = open question, ask or vary deliberately.
+- Scope it honestly: "shorter" said about an email is about emails, not about code comments. Generalize only after the pattern crosses contexts.
+
+## Adjusting defaults
+
+- Apply learned preferences to *new* work without being asked — that is the entire point. If the user corrected Title Case at message 6, message 12's headings arrive in sentence case.
+- Adjust the specific dimension, not everything: a rejected color scheme does not implicate the layout that carried it. Over-generalizing from one rejection throws away accepted work.
+- When two preferences conflict in a new situation ("dense data" vs "keep it short"), name the conflict in one line and pick the resolution you'd defend.
+- Preferences the user states outright ("always use ʻokina") outrank inferred ones; inferred ones outrank your generic defaults.
+
+## Summarize preferences back
+
+At natural checkpoints — end of a work phase, before a big build, or when asked "make it like I like it" — reflect the ledger back in 3–6 bullets:
+
+> Based on this session, I'm defaulting to: sentence-case headings, summaries as bullets, muted accent colors, and roughly half my usual reply length. Say the word if any of those are wrong.
+
+- Do this at most once or twice per session; it's a checkpoint, not a recurring ritual.
+- Frame as falsifiable defaults ("I'm defaulting to X") so the user can veto cheaply.
+- If the user has memory/preference persistence available (a CLAUDE.md, saved preferences), offer to persist the stable ones — session ledgers die with the session.
+
+## Anti-patterns
+
+- Announcing every ledger update ("Noted! I'll remember you prefer…") — apply silently; summarize only at checkpoints.
+- Treating one ambiguous signal as a law, then over-rotating the entire style.
+- Letting the ledger go stale: a preference the user later contradicts must be updated, not averaged.
+- Re-offering a rejected approach because it "fits better here" without acknowledging it was rejected before.
+- Learning the preference but not the reason: "shorter" after a 200-line reply means "match effort to the ask", not "always be terse".
+
+## End-of-session checklist
+
+- [ ] No correction was needed twice for the same dimension
+- [ ] Silent edits were diffed and logged
+- [ ] Defaults visibly shifted in later deliverables
+- [ ] Preferences summarized back once, as vetoable defaults
+- [ ] Stable preferences offered for persistence where a mechanism exists

@@ -1,39 +1,57 @@
 ---
 name: nano-banana
-description: Generates hero, section, and background imagery from text prompts using an image-generation model/MCP, then optimizes and saves the result as WebP/AVIF into the SANGER site assets. Use when the request mentions generating an image, hero visual, product/lifestyle shot, photo, or background art, or asks to "create a picture" for a page/section.
+description: Crafts effective prompts for text-to-image generation models (e.g. Google's Nano Banana / Gemini image generation) and runs an iteration workflow from the terminal. Use when the user asks to generate, create, or refine AI images, or when an image-generation tool or API is available and images are needed.
 ---
 
-# Nano-Banana: Text-to-Image for SANGER
+# Prompting Text-to-Image Models
 
-Drive an image-generation model from the agent to produce on-brand photography and art, then hand off optimized files ready for `next/image`.
+## Check tooling first
 
-## When to use
-- "Generate a hero image / section background / lifestyle shot for ..."
-- Need original team-sports / jersey / stadium / locker-room imagery.
-- Replacing a placeholder in `public/assets/` with real generated art.
-- Producing multiple aspect-ratio variants (desktop 16:9, mobile 4:5) of one concept.
+Before promising an image, verify a generation path exists:
 
-## Method
-1. Clarify intent: page/section, subject, aspect ratio, and mood. Default palette is SANGER brand — off-white #FAFAF8, near-black #111111, red accent #E4141C. Keep imagery premium, editorial, not stocky.
-2. Build the prompt with the `banana-claude` 5-component formula (subject, composition, style, lighting, technical). Always include camera/lens cues and "no text, no watermark, no logos".
-3. Pick a generation backend, in priority order:
-   - An image-gen MCP if connected (e.g. `mcp__higgsfield__generate_image`) — call with the prompt, aspect ratio, and a high-quality/photoreal preset; poll job status; then `media_import_url` / download the result URL.
-   - A local CLI/API fallback (e.g. an `openai images` / `replicate` / `comfyui` CLI wrapper) if configured in the repo.
-4. Download the raw output to a temp path (e.g. the scratchpad dir), never straight into `public/`.
-5. Optimize and convert to modern formats with `sharp` or `cwebp`/`avifenc`:
-   - `npx sharp -i raw.png -o hero.webp --webp-quality 82`
-   - Also emit AVIF: `npx @squoosh/cli --avif '{"cqLevel":30}' raw.png` (or `avifenc`).
-   - Resize to the largest needed render width (e.g. 2400px wide for hero) plus a 1x mobile variant.
-6. Save into `/home/user/sanger/public/assets/` using a descriptive kebab name and dimension suffix, e.g. `hero-team-lineup-2400.webp`, `hero-team-lineup-2400.avif`, `hero-team-lineup-mobile-1080.webp`.
-7. Report the exact paths and a ready-to-paste `next/image` snippet (width/height, `sizes`, `priority` for hero).
+1. Look for an image-generation MCP tool in the current session (names commonly contain `image`, `generate`, `imagen`, `gemini`, `nano`). Canva's `generate-design` can also produce visual output for design-shaped requests.
+2. Check for a CLI or SDK: `gemini --help`, or a Python environment with `google-genai` installed plus an API key in the environment (`GEMINI_API_KEY` / `GOOGLE_API_KEY`).
+3. If nothing is available, say so plainly and offer the next best thing: write the finished prompt(s) for the user to paste into their tool of choice, or build the visual as SVG/HTML instead. Never fabricate an API endpoint or model ID — check current docs for exact model names before writing API code.
 
-## Fallback
-If no image MCP or generation CLI is available, do NOT fabricate a binary. Instead: (a) write the finalized prompt to the scratchpad and tell the user which tool to run it in, and (b) offer to generate a lightweight SVG/gradient placeholder via the `canvas-design` skill so layout work can proceed.
+## Anatomy of a strong prompt
 
-## Checklist
-- [ ] Prompt uses the 5-component formula and forbids text/watermark/logo
-- [ ] Output saved as BOTH `.webp` and `.avif` in `/home/user/sanger/public/assets/`
-- [ ] File names are kebab-case with a width suffix; desktop + mobile variants exist where needed
-- [ ] Largest dimension matches the real render size (no multi-MB oversized files)
-- [ ] Reported paths are absolute and a `next/image` usage snippet is included
-- [ ] Imagery is on-brand (premium, correct palette, no stray logos/text)
+Write prompts as a scene description, not a keyword pile. Modern models (Gemini-family especially) respond better to fluent sentences than to comma-spam. Cover these axes, in roughly this order:
+
+1. **Subject** — who/what, with concrete attributes: "a weathered cedar beach cottage with a wraparound lanai"
+2. **Composition** — framing and viewpoint: "wide establishing shot, low angle, subject on the right third, generous negative space left for text"
+3. **Lighting** — the single highest-leverage descriptor: "golden hour backlight with long soft shadows", "overcast diffuse light", "hard noon sun", "blue hour with warm interior lights glowing"
+4. **Lens/camera** — implies depth of field and geometry: "shot on a 24mm lens" (wide, environmental), "85mm f/1.8" (portrait, creamy bokeh), "100mm macro", "drone shot from 120m"
+5. **Style/medium** — "editorial photography", "watercolor illustration", "flat vector infographic", "35mm film grain, Kodak Portra palette"
+
+Example assembled prompt:
+
+> An editorial photograph of a weathered cedar beach cottage with a wraparound lanai, wide establishing shot from a low angle with the cottage on the right third and open sky on the left. Golden hour backlight, long soft shadows across the sand. Shot on a 24mm lens. Warm, slightly desaturated film palette.
+
+## Iteration workflow
+
+- Generate, inspect (use the Read tool on the output file — you can see images), then change **one axis at a time**. If lighting is wrong, fix only lighting; do not rewrite the whole prompt or you lose the ability to attribute improvements.
+- Keep a numbered log of prompt versions in a scratch file so you can revert.
+- When a model supports conversational editing (Gemini image models do), prefer "same image, but make the sky overcast" over regenerating from scratch — it preserves composition.
+- Generate 2–4 candidates for hero images; pick, then refine the winner.
+- Ask for the target aspect ratio explicitly (via API parameter if the tool exposes one, otherwise in-prompt: "16:9 widescreen composition"). Don't crop-and-hope.
+
+## Negative/steering language
+
+Most current models take steering better as positive phrasing than as negative lists. Instead of "no people", write "an empty, quiet scene". If the tool exposes a true negative-prompt parameter, use it for concrete artifacts: "text, watermark, logo, extra fingers".
+
+## Common failure modes and fixes
+
+**Text inside images.** Models mangle long strings. Rules of thumb: keep required in-image text to 1–5 words; put the exact string in quotes in the prompt ("a sign that reads \"OPEN HOUSE\""); if the text matters (flyers, social posts), generate the image *without* text and overlay real type afterwards with SVG/HTML or an image editor — that also keeps the text editable.
+
+**Hands and limbs.** Reduce hand prominence: "hands in pockets", "holding a coffee mug" (gives fingers a job), or crop tighter. If hands are essential, generate several candidates and inspect closely at full size.
+
+**Brand colors drifting.** Models approximate color names loosely. Anchor with the hex code *and* a plain-language name: "deep red (#B32025), a rich brick red — not orange, not pink". Expect ±10% drift anyway; for strict brand compliance, generate near-target and color-correct after, or keep brand-colored elements (logo, bar, frame) as a post-composited overlay.
+
+**Sameness across a set.** For a series that must feel cohesive, freeze the style clause word-for-word across prompts and vary only the subject clause.
+
+**Uncanny realism for marketing.** For real-estate and product marketing, prefer "photorealistic" plus a concrete camera/film reference over "hyper-realistic 8k ultra detailed", which tends to produce plasticky HDR looks.
+
+## Ethics and compliance notes
+
+- AI-generated imagery used in listings or ads must not misrepresent the actual property. Label renders/concepts as such.
+- Never generate images of real, identifiable people (clients, agents) without an explicit request and a clear legitimate purpose.

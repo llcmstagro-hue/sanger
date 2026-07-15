@@ -1,67 +1,46 @@
-# SANGER — Skills Library
+# Skills Library
 
-Claude Code Skills for building and maintaining the SANGER site
-(Next.js 14 · TypeScript · Tailwind · Framer Motion · Zustand · Zod).
+Agent Skills for Claude Code, integrated into this repo under `.claude/skills/`.
+Each skill is a `SKILL.md` (YAML frontmatter + body) and is auto-loaded by
+Claude when its `description` trigger matches the task.
 
-Each skill lives in its own folder as `SKILL.md` (YAML frontmatter +
-method + checklist) and is auto-loaded by Claude when its trigger matches.
-Skills are organized into the layered system below.
+**Source:** the skills are the authentic files from the public repository
+[`the-ulu-team/claude`](https://github.com/the-ulu-team/claude) (42 skills across
+6 plugins). They are copied here verbatim and flattened into `.claude/skills/` so
+Claude Code loads them directly. The 6 plugins map 1:1 to the "layers" from the
+reference carousel:
 
-## Layer 1 — Frontend & UI Design
-| # | Skill | Purpose |
-|---|-------|---------|
-| 01 | `frontend-design` | Force bold, distinctive, non-generic layouts |
-| 02 | `impeccable` | Strict OKLCH colors + 4px spacing grid |
-| 03 | `taste-skill` | High-level artistic taste in visual & motion polish |
-| 04 | `animate` | Micro-interaction transition curves (easing/spring) |
-| 05 | `design-motion` | Three-stage motion audit (intent → choreography → perf) |
-| 06 | `theme-factory` | Auto-generate cohesive OKLCH palettes (light + dark) |
-| 07 | `figma-implement` | Translate a Figma design faithfully into code |
-| 08 | `playwright-mcp` | Live-browser screenshots to iterate on design |
-| 09 | `brandkit` | Full brand guidelines in a single pass |
-| 10 | `designer-skills` | Professional design specs / redlines for handoff |
+## Layer 1 — Design Foundations (`design-foundations`)
+`frontend-design` · `impeccable` · `taste-skill` · `animate` · `design-motion` ·
+`theme-factory` · `figma-implement` · `playwright-mcp` · `brandkit` · `designer-skills`
 
-## Layer 2 — Images, Graphics & Video
-| # | Skill | Purpose |
-|---|-------|---------|
-| 11 | `nano-banana` | Terminal-driven text-to-image; save to `public/assets` |
-| 12 | `banana-claude` | 5-component prompt formula for image generation |
-| 13 | `canvas-design` | Editable vector/SVG graphics, PNG export |
-| 14 | `flow-fields` | Math-based flow-field / particle animation |
-| 15 | `remotion-superpowers` | Programmatic video studio in React (Remotion) |
-| 16 | `claude-remotion` | Remotion timings + cascading title reveals |
-| 17 | `blender-motion` | 3D scenes/renders via Blender Python |
-| 18 | `ae-motion` | ExtendScript (JSX) automation for After Effects |
+## Layer 2 — Visual Media (`visual-media`)
+`nano-banana` · `banana-claude` · `canvas-design` · `algorithmic-art` ·
+`remotion-superpowers` · `claude-remotion` · `blender-motion` · `ae-motion`
 
-## Layers 3 & 4 — Product & Interaction
-| # | Skill | Purpose |
-|---|-------|---------|
-| 19 | `hi-fi-mockups` | High-fidelity mockups before build |
-| 20 | `brandkit-sync` | Keep brand tokens in sync across the codebase |
-| 21 | `slide-decks` | Reusable presentation template system |
-| 22 | `figma-mcp` | Read Figma frames → code changes via Figma MCP |
-| 23 | `token-budgets` | Estimate & budget context-window token usage |
-| 24 | `turn-repair` | Recover from interrupted/failed conversation turns |
-| 25 | `generative-ui` | Render adaptive, schema-driven UI widgets |
-| 26 | `progressive-reveal` | Staged content disclosure / scroll reveals |
-| 27 | `frustration-checks` | Detect user frustration and adapt responses |
-| 28 | `feedback-loops` | In-code log of accepted edits & rationale |
+> Note: the carousel's item 14 "Animate — math-based flow fields" is the
+> `algorithmic-art` skill (flow fields, Perlin noise, particle systems).
 
-## Layer 6 — Trust & Evaluation
-| # | Skill | Purpose |
-|---|-------|---------|
-| 37 | `guardrails` | Firm refusal boundaries and safety limits |
-| 38 | `trust-calibration` | Citations & confirmation signals for claims |
-| 39 | `transparency-patterns` | Surface confidence level and uncertainty |
-| 40 | `quality-rubrics` | Pass/fail rubrics to grade deliverables |
-| 41 | `task-decomposition` | Split goals into agent-role sub-tasks |
-| 42 | `handoff-protocols` | Structured context handoff to humans/agents |
+## Layers 3 & 4 — Design Ops (`design-ops`)
+`hi-fi-mockups` · `brandkit-sync` · `slide-decks` · `figma-mcp` · `token-budgets` ·
+`turn-repair` · `generative-ui` · `progressive-reveal` · `frustration-checks` · `feedback-loops`
 
-## Note on Layer 5
+## Layer 5 — Prompt Craft (`prompt-craft`)
+`chain-of-thought` · `few-shot-patterns` · `system-structure` · `persona-architecture` ·
+`tone-calibration` · `constraint-spec` · `emotional-design` · `template-design`
 
-Layer 5 (skills 29–36) was not included in the source screenshots, so it
-is not part of this library yet. Provide that slide to have those skills
-integrated the same way.
+> This layer was missing from the source screenshots; it is included here from the
+> upstream repo, completing the full 42-skill set.
+
+## Layer 6 — Agent Reliability (`agent-reliability`)
+`guardrails` · `trust-calibration` · `transparency-patterns` · `quality-rubrics` ·
+`task-decomposition` · `handoff-protocols`
 
 ---
-34 skills integrated. Skill authoring format: <https://code.claude.com/docs>.
+
+**Total: 42 skills.**
+
+Some upstream skills reference the original author's house brands and examples
+(The Ulu Team, Living Hawaiʻi, real-estate/MLS copy). These are kept verbatim as
+the authentic source. To tailor them to SANGER, swap those brand/example
+references for SANGER's own (white theme `#FAFAF8`/`#111111`, red accent `#E4141C`).

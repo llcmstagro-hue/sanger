@@ -1,41 +1,70 @@
 ---
 name: design-motion
-description: Runs a structured three-stage motion audit — intent, choreography, performance — to review and improve animation across a UI. Trigger when reviewing a page's overall motion, when animations feel chaotic/excessive/inconsistent, or when asked to critique or systematize the motion design of a flow.
+description: Audits existing motion in a UI through three lenses — purpose, continuity, and personality — and prescribes fixes for jank, missing choreography, and incoherent staggering. Use when reviewing or improving animation already present in an interface, not when writing transitions from scratch.
 ---
 
 # Design Motion
 
-A repeatable audit for the whole motion layer of a screen or flow, not a single component. Use it to find what to add, cut, and fix.
+Audit motion in an existing UI with three lenses, in order. Each lens has a question, symptoms to look for, and fixes. Run the whole audit before changing anything — motion problems are usually systemic, not local.
 
-## When to use
-- Reviewing or critiquing the animation of a full page or flow.
-- Motion feels busy, inconsistent, or laggy across a screen.
-- Establishing motion consistency for the SANGER site.
+## Lens 1: Purpose — does each animation do a job?
 
-## Method
-Work the three stages in order; don't optimize performance before intent is right.
+Every animation must do at least one of: show where something came from or went, communicate state change, direct attention, or mask latency. If it does none, delete it.
 
-### Stage 1 — Intent (why does it move?)
-1. List every animation on the screen and assign each a job: orient (guide attention), give feedback (confirm an action), express brand, or none. Anything scoring "none" is a candidate to cut.
-2. Enforce a motion budget: typically one hero/focal moment per view plus supporting micro-feedback. Simultaneous competing animations dilute all of them.
-3. Confirm motion reinforces hierarchy — the most important element gets the most distinctive movement, not the least.
+Symptoms of purposeless motion:
+- Idle animations (floating icons, pulsing cards, auto-playing loops) on content that isn't loading.
+- Elements that fade-and-slide in on scroll for no reason — scroll reveals are only purposeful when they pace reading of sequential content.
+- Attention-directing motion pointing at things that aren't important (animated badges on every menu item).
+- Hover effects so elaborate they delay reading the label (flips, wipes, letter-by-letter scrambles on nav links).
 
-### Stage 2 — Choreography (how do things move together?)
-4. Establish a shared vocabulary: consistent easing (one ease-out curve, e.g. `[0.22, 1, 0.36, 1]`), a small duration set (e.g. 150 / 300 / 450ms), and consistent direction (reveals rise on +y).
-5. Sequence, don't dump: stagger related entrances (`staggerChildren` ~0.06–0.1s) so the eye reads order. Cut anything that fires all at once.
-6. Check enter/exit symmetry via `AnimatePresence` — elements should leave the way they arrived, not pop out.
-7. Verify transitions between states/routes feel continuous (shared `layoutId` where an element persists).
+Fixes: delete first. If the element needs feedback, replace with the smallest sufficient signal (a 150ms color shift beats a 600ms shimmer).
 
-### Stage 3 — Performance (does it hold 60fps?)
-8. Confirm only `transform`/`opacity` animate; flag animated `width`/`height`/`top`/`box-shadow`.
-9. Check scroll-linked and `whileInView` animations use `once: true` and reasonable viewport margins so they don't thrash.
-10. Test on a throttled CPU (DevTools 4–6x) and with `prefers-reduced-motion` on; ensure essential content is never gated behind motion.
+## Lens 2: Continuity — does the interface feel physically coherent?
 
-## Checklist
-- [ ] Every animation has an assigned job; "none" ones removed.
-- [ ] Motion budget respected — one focal moment per view.
-- [ ] Shared easing + limited duration set applied consistently.
-- [ ] Related entrances staggered; nothing fires all at once.
-- [ ] Enter/exit symmetric via AnimatePresence.
-- [ ] Only transform/opacity animated; verified ~60fps under CPU throttle.
-- [ ] `prefers-reduced-motion` path leaves content fully usable.
+Objects should appear to persist. Things that pop in/out of existence, teleport, or reflow abruptly break the spatial model.
+
+Symptoms:
+- Modals/menus that appear instantly with no origin (should grow from their trigger or fade up from below).
+- List items that jump when one is added/removed instead of making room (use FLIP or `view-transition`).
+- A panel that slides in from the left but exits by fading — enter and exit must be inverses.
+- Navigation where page A slides left but going "back" also slides left (back must reverse the spatial direction).
+- Layout shift during load: skeletons that don't match final content dimensions.
+
+Fixes:
+- Give every appearing element an origin: `transform-origin` at its trigger, or a directional slide from the edge it belongs to.
+- Enter/exit symmetry: same axis, reversed direction, exit ~75% of enter duration.
+- For reordering/insertion, animate siblings' positions (FLIP technique or the View Transitions API), never let them snap.
+- Shared-element continuity for master→detail: the thumbnail should move/scale into the detail view's hero if the stack supports it.
+
+## Lens 3: Personality — does the motion match the brand's temperament?
+
+Motion has a voice. Choose one adjective set and enforce it everywhere:
+
+- Calm/premium: long durations (400–700ms), strong ease-out, small distances, no overshoot.
+- Crisp/productive: short durations (120–250ms), tight easings, minimal choreography.
+- Playful: springs and overshoot, slightly larger scales — small elements only.
+
+Symptoms of personality incoherence: a springy bounce on buttons next to a slow elegant hero fade; five different easing curves across components; durations ranging 100ms–1s with no system.
+
+Fix: pick the temperament, define 2–3 easing tokens and 3 duration tokens, and normalize every animation onto them.
+
+## Jank hunt (run alongside the lenses)
+
+- Open DevTools Performance panel, record while triggering each animation, look for frames over 16ms.
+- Common causes: animating `height/width/top/left/margin`, `box-shadow`, or `filter: blur()`; layout thrash from reading `offsetHeight` inside animation frames; unthrottled scroll handlers.
+- Fixes: move to `transform`/`opacity`; `will-change: transform` on elements about to animate (remove after); replace scroll handlers with IntersectionObserver or CSS scroll-driven animations.
+- Check low-power conditions: 4x CPU throttle in DevTools. If it stutters there, simplify.
+
+## Choreography and stagger rules
+
+When multiple elements animate together:
+
+- Stagger siblings by 30–60ms per item; total stagger window under 400ms. Cap staggered items at ~8 — beyond that, batch the rest into one group.
+- Order must follow meaning: reading order for content, hierarchy for emphasis (headline → subline → CTA), spatial order for grids (row by row, or radiating from the interaction point).
+- Parent before children: a card animates in, then its contents; never contents floating in before their container.
+- One conductor: simultaneous unrelated animations in different screen regions compete — sequence them or cut one.
+- Stagger delays go on enter only; exits leave together (staggered exits feel slow).
+
+## Audit report format
+
+For each finding, report: location → lens violated → symptom → prescribed fix → priority (P1 breaks comprehension or causes jank; P2 incoherence; P3 polish). Lead with P1 jank and continuity breaks; personality tuning comes last.
