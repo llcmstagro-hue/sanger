@@ -2,16 +2,17 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
-import { Placeholder } from '@/components/ui/Placeholder';
 
 type Step = {
   k: string;
   v: string;
   label: string;
   detail: string;
+  img: string;
 };
 
 const STEPS: Step[] = [
@@ -20,24 +21,28 @@ const STEPS: Step[] = [
     v: 'Дышащие ткани, которые держат цвет и форму сезон за сезоном.',
     label: 'Ткань крупным планом',
     detail: 'Отбор ткани',
+    img: '/assets/production/materials.webp',
   },
   {
     k: 'Пошив',
     v: 'Аккуратные швы и посадка по фигуре на собственном производстве.',
     label: 'Швейная машина · руки мастера',
     detail: 'Крой и пошив',
+    img: '/assets/production/sewing.webp',
   },
   {
     k: 'Нанесение',
     v: 'Фамилии, номера и логотип вашего клуба — чётко и надолго.',
     label: 'Нанесение номера',
     detail: 'Печать и вышивка',
+    img: '/assets/production/number.webp',
   },
   {
     k: 'Контроль',
     v: 'Проверяем каждый комплект перед отправкой и бережно упаковываем.',
     label: 'Готовые комплекты · упаковка',
     detail: 'Контроль качества',
+    img: '/assets/production/qc.webp',
   },
 ];
 
@@ -52,7 +57,15 @@ function Visual({
 }) {
   return (
     <div className={className} style={style}>
-      <Placeholder label={step.label} ratio="aspect-[4/5]" className="h-full w-full" rounded="rounded-[22px]" />
+      <div className="relative h-full w-full overflow-hidden rounded-[22px] bg-ink shadow-card">
+        <Image
+          src={step.img}
+          alt={step.label}
+          fill
+          sizes="(max-width: 1024px) 90vw, 55vw"
+          className="object-cover"
+        />
+      </div>
     </div>
   );
 }
@@ -224,7 +237,15 @@ export function Production() {
             {STEPS.map((c, i) => (
               <Reveal key={c.k} delay={i * 0.05}>
                 <figure>
-                  <Placeholder label={c.label} ratio="aspect-[3/3.4]" className="w-full" />
+                  <div className="relative aspect-[3/3.4] w-full overflow-hidden rounded-2xl bg-ink shadow-soft">
+                    <Image
+                      src={c.img}
+                      alt={c.label}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
                   <figcaption className="mt-4">
                     <div className="font-display text-[15px] font-bold uppercase text-ink">{c.k}</div>
                     <p className="mt-1 text-[13.5px] leading-snug text-muted">{c.v}</p>

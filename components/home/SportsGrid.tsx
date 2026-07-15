@@ -1,9 +1,9 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { Placeholder } from '@/components/ui/Placeholder';
 import { ALL_SPORTS } from '@/lib/sports';
 
 const SUB: Record<string, string> = {
@@ -32,10 +32,16 @@ export function SportsGrid() {
                 href={`/${s.slug}`}
                 className="group block overflow-hidden rounded-2xl border border-line bg-white transition-all duration-300 ease-sanger hover:-translate-y-1.5 hover:border-red hover:shadow-soft"
               >
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <div className="absolute inset-0 transition-transform duration-500 ease-sanger group-hover:scale-[1.04]">
-                    <Placeholder label={s.name} sub="фото дисциплины" rounded="rounded-none" className="h-full w-full" />
-                  </div>
+                <div className="relative aspect-[3/4] overflow-hidden bg-ink">
+                  <Image
+                    src={`/assets/sports/${s.slug}.webp`}
+                    alt={`${s.name}: спортсмен в форме команды`}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    className="object-cover transition-transform duration-[900ms] ease-sanger group-hover:scale-[1.06]"
+                  />
+                  {/* нижний градиент для читаемости и глубины */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/50 to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
                 </div>
                 <div className="p-4">
                   <div className="font-display text-[17px] font-extrabold uppercase text-ink">{s.name}</div>
