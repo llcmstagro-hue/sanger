@@ -24,7 +24,8 @@ vecher-3, pozdniy-vecher, final.
 ## 3. Готовые материалы (постоянные ссылки)
 | Файл | Ссылка |
 |---|---|
-| Фильм Wedding_Film.mp4 (1920×1080, H.264, 3:04) | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/49597208-94a2-45cb-aa90-cb3a0081c72a.mp4 |
+| **Фильм С МУЗЫКОЙ** Wedding_Film_music.mp4 (1920×1080, H.264, 3:04) | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/1867616b-6071-4c89-be9a-33dde4f50db9.mp4 |
+| Фильм без музыки Wedding_Film.mp4 | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/49597208-94a2-45cb-aa90-cb3a0081c72a.mp4 |
 | Презентация Wedding_Presentation.pptx (37 слайдов, 16:9 FullHD) | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/292d018e-9db0-4ca1-b49a-4bbb4a3f9c29.pptx |
 | Контактный лист selected_contact_sheet.pdf | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/83dd33e0-2562-45b7-8cc7-76f57a555666.pdf |
 | Таблица анализа photo_analysis.csv | https://d2ol7oe51mr4n9.cloudfront.net/user_3GRaVW9DP8KDs9Ei0s5ovvXoZIn/875a2c30-f057-48d8-b1b7-f41a7842b06c.csv |
@@ -38,7 +39,8 @@ vecher-3, pozdniy-vecher, final.
 - 1920×1080, H.264, 25 fps, длительность 3:04, 37 сегментов.
 - Титульная карточка «Александр & Юлия / 25.08.2015», финальная — «И это только начало нашей истории».
 - Статичные фото — по 5 с с медленным Ken Burns (чередование приближения/отдаления), анимированные клипы вставлены между статикой (никогда два подряд), мягкие фейды.
-- Музыка: инструмента для генерации лицензированной ИНСТРУМЕНТАЛЬНОЙ музыки в окружении нет (Higgsfield генерирует только речь) — фильм собран без звуковой дорожки, инструкция по наложению музыки в MUSIC_INSTRUCTIONS.txt.
+- Музыка: в финальную версию (Wedding_Film_music.mp4) наложена «Gymnopédie No. 1» Эрика Сати — композиция в общественном достоянии, исполнение Kevin MacLeod (incompetech.com), лицензия Creative Commons: By Attribution 4.0 (http://creativecommons.org/licenses/by/4.0/). Громкость нормализована (loudnorm −18 LUFS), fade-in 2 с, fade-out 8 с. Версия без музыки также сохранена; инструкция по замене трека — в MUSIC_INSTRUCTIONS.txt.
+- Атрибуция для титров/описания при публикации: «Gymnopédie No. 1» Kevin MacLeod (incompetech.com). Licensed under Creative Commons: By Attribution 4.0.
 
 ## 5. Проблемы и как решены
 1. **Модерация Higgsfield** ложно помечала обычные свадебные фото как «nsfw»: 11 генераций отклонено. Решение: до 3 попыток на сцену с заменой исходного фото на соседний кадр той же сцены. Итог — 9 клипов; сцены «прогулка», «портреты», «финал», «поздний вечер» остались без анимации (все кандидаты отклонялись повторно), вместо них анимированы «танец» и «вечер-3».
