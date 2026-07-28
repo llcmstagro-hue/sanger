@@ -30,7 +30,7 @@ def get_thumb(name):
             arr = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_REDUCED_COLOR_2)
             if arr is None: return None
             h, w = arr.shape[:2]
-            sc = min(1.0, 1280.0 / max(h, w))
+            sc = min(1.0, 640.0 / max(h, w))
             if sc < 1: arr = cv2.resize(arr, (int(w * sc), int(h * sc)))
             cv2.imwrite(p, arr, [cv2.IMWRITE_JPEG_QUALITY, 88])
             return arr

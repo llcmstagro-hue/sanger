@@ -29,7 +29,7 @@ python3 -c "import cv2" || { echo "FATAL: cv2 missing"; exit 1; }
 [ -s files.json ] || python3 listing.py || { echo "FATAL: listing failed"; exit 1; }
 echo "setup done $(date +%H:%M:%S)"
 ckpt_save() {
-  tar czf ckpt_new.tar.gz analysis_compact.jsonl clusters.json selected.json photo_analysis.csv rejected_examples.json sel_montage cluster_montage.jpg 2>/dev/null
+  tar czf ckpt_new.tar.gz analysis_compact.jsonl clusters.json selected.json photo_analysis.csv rejected_examples.json sel_montage cluster_montage.jpg thumbs 2>/dev/null
   mv ckpt_new.tar.gz ckpt.tar.gz
   curl -s -X PUT -H "Content-Type: application/octet-stream" --data-binary @ckpt.tar.gz -o /dev/null -w "ckpt PUT %{http_code} $(date +%H:%M:%S)\n" "$(cat ckpt_put.txt)"
 }
