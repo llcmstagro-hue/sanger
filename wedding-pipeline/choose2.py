@@ -10,6 +10,14 @@ recs = uniq
 clusters = json.load(open('clusters.json'))
 c0 = np.array(clusters[0]['cent'], dtype=np.float32)
 c1 = np.array(clusters[1]['cent'], dtype=np.float32)
+grp0 = [c0]
+grp1 = [c1]
+for c in clusters[2:]:
+    v = np.array(c['cent'], dtype=np.float32)
+    s0 = float(np.dot(v, c0)); s1 = float(np.dot(v, c1))
+    if max(s0, s1) >= 0.36:
+        (grp0 if s0 >= s1 else grp1).append(v)
+print('identity groups: person0=%d clusters person1=%d clusters' % (len(grp0), len(grp1)))
 T = 0.38
 os.makedirs('thumbs', exist_ok=True)
 
@@ -54,7 +62,8 @@ for r in recs:
             if f[3] >= 30: others += 1
             continue
         e = deq(f[6])
-        s0 = float(np.dot(e, c0)); s1 = float(np.dot(e, c1))
+        s0 = max(float(np.dot(e, v)) for v in grp0)
+        s1 = max(float(np.dot(e, v)) for v in grp1)
         if s0 >= T and s0 >= s1:
             has0 = True
             if f0 is None or f[3] > f0[3]: f0 = f
@@ -127,7 +136,7 @@ def hist_of(p):
         hists[nm] = cv2.normalize(h, h).flatten()
     return hists[nm]
 
-quota = [1 if len(s) < 8 else 2 for s in scenes]
+quota = [(3 if len(s) >= 14 else 2 if len(s) >= 4 else 1) for s in scenes]
 selected = []
 for si, s in enumerate(scenes):
     cand = sorted(s, key=lambda p: -p['score'])
@@ -142,7 +151,7 @@ for si, s in enumerate(scenes):
     for p in take:
         p['scene'] = si; selected.append(p)
 selected.sort(key=lambda p: p['t'])
-while len(selected) > 40:
+while len(selected) > 38:
     cnts = collections.Counter(p['scene'] for p in selected)
     cands = [p for p in selected if cnts[p['scene']] > 1]
     if not cands: break
