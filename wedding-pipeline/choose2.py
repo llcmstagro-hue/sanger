@@ -27,7 +27,7 @@ def get_thumb(name):
         try:
             rq = urllib.request.Request(u, headers={'User-Agent': 'Mozilla/5.0'})
             data = urllib.request.urlopen(rq, timeout=60).read()
-            arr = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+            arr = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_REDUCED_COLOR_2)
             if arr is None: return None
             h, w = arr.shape[:2]
             sc = min(1.0, 1280.0 / max(h, w))
