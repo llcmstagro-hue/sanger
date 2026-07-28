@@ -47,6 +47,9 @@ def qemb(e):
     q = np.clip(np.round(v * 127), -127, 127).astype(np.int8)
     return base64.b64encode(q.tobytes()).decode()
 
+THUMBS = BASE + '/thumbs'
+os.makedirs(THUMBS, exist_ok=True)
+
 def analyze(f, data):
     im = Image.open(io.BytesIO(data))
     dto = ''
@@ -54,10 +57,13 @@ def analyze(f, data):
         ex = im._getexif() or {}
         dto = str({ExifTags.TAGS.get(k, str(k)): v for k, v in ex.items()}.get('DateTimeOriginal', ''))
     except Exception: pass
-    im = ImageOps.exif_transpose(im).convert('RGB')
     w, h = im.size
-    sc = min(1.0, 1280.0 / max(w, h))
-    ana = im.resize((int(w * sc), int(h * sc)), Image.LANCZOS) if sc < 1 else im
+    im.draft('RGB', (w // 2, h // 2))
+    im = ImageOps.exif_transpose(im).convert('RGB')
+    w2, h2 = im.size
+    sc = min(1.0, 1280.0 / max(w2, h2))
+    ana = im.resize((int(w2 * sc), int(h2 * sc)), Image.LANCZOS) if sc < 1 else im
+    ana.save(THUMBS + '/' + f['name'], quality=88)
     a = cv2.cvtColor(np.asarray(ana), cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY)
     sharp = float(cv2.Laplacian(gray, cv2.CV_64F).var())
