@@ -23,6 +23,6 @@ python3 analyze.py || { echo "FATAL: analyze failed"; exit 1; }
 echo "analyze done $(date +%H:%M:%S)"
 python3 cluster.py || { echo "FATAL: cluster failed"; exit 1; }
 echo "cluster done $(date +%H:%M:%S)"
-python3 select.py || { echo "FATAL: select failed"; exit 1; }
+python3 choose.py || { echo "FATAL: select failed"; exit 1; }
 echo "select done $(date +%H:%M:%S)"
 echo "ALL_DONE $(date +%H:%M:%S)"
